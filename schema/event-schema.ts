@@ -1,11 +1,12 @@
 import { z } from "zod";
+import { eventTicketTypeSchema } from "./ticket-schema";
 
-export const EventTypeSchema = z.object({
-  id: z.number(),
-  type: z.string(),
-  created_at: z.string(),
-  updated_at: z.string(),
-});
+// export const EventTypeSchema = z.object({
+//   id: z.number(),
+//   type: z.string(),
+//   created_at: z.string(),
+//   updated_at: z.string(),
+// });
 
 export const EventSchema = z.object({
   id: z.number(),
@@ -22,9 +23,10 @@ export const EventSchema = z.object({
   event_type_id: z.number(),
   created_at: z.string(),
   updated_at: z.string(),
-  event_type: EventTypeSchema,
+  // event_type: EventTypeSchema,
+  event_ticket_types: z.array(eventTicketTypeSchema),
 });
 
 
 export type Event = z.infer<typeof EventSchema>;
-export type EventType = z.infer<typeof EventTypeSchema>;
+// export type EventType = z.infer<typeof EventTypeSchema>;

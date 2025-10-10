@@ -1,0 +1,96 @@
+'use client'
+
+import { fullFormSchema, stepOneSchema, stepTwoSchema } from '@/schema/ticket-schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Tabs, TabsContent } from '../ui/tabs'
+import { TabsList } from '@radix-ui/react-tabs'
+import StepTabsTrigger from './step-tabs-trigger'
+import CartList from '@/app/cart/cart-list'
+import useCart from '@/hooks/use-cart'
+import CartFooter from './cart-footer'
+import UserDetails from './user-details'
+import { Form } from '../ui/form'
+
+export default function CartForm() {
+    const [currentStep, setCurrentStep] = useState(1)
+
+    const { cart } = useCart()
+
+    const form = useForm<z.infer<typeof fullFormSchema>>({
+        resolver: zodResolver(fullFormSchema),
+        mode: 'onChange',
+        defaultValues: {
+            tickets: cart
+        }
+    })
+
+    // Remove the useEffect that was causing infinite loops
+    // The form already gets cart data through defaultValues
+
+    const stepSchemas = [
+        stepOneSchema,
+        stepTwoSchema
+    ]
+
+    const nextStep = async () => {
+
+        const schema = stepSchemas[currentStep - 1]
+        const values = form.getValues()
+        const result = schema.safeParse(values)
+
+        console.log(result.error)
+
+
+        if (!result.success) {
+            // trigger validation for this step
+            await form.trigger(Object.keys(schema.shape) as (keyof z.infer<typeof schema>)[])
+            return
+        }
+
+        setCurrentStep((s) => Math.min(s + 1, 5))
+    }
+
+    const prevStep = () => setCurrentStep((s) => Math.max(s - 1, 1))
+
+    const onSubmit = (data: z.infer<typeof fullFormSchema>) => {
+        console.log("✅ Final form data:", data)
+    }
+
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Tabs value={`step${currentStep}`} defaultValue="step1" className="flex-1 w-full flex flex-col gap-10">
+                    <TabsList className='flex w-full bg-transparent gap-0 rounded-none p-0'>
+                        <StepTabsTrigger className={currentStep <= 1 ? 'border-b-white/30' : 'border-b-white text-white'} value="step1"></StepTabsTrigger>
+                        <StepTabsTrigger className={currentStep <= 2 ? 'border-b-white/30' : 'border-b-white text-white'} value="step2"></StepTabsTrigger>
+                        <StepTabsTrigger className={currentStep <= 3 ? 'border-b-white/30' : 'border-b-white text-white'} value="step3"></StepTabsTrigger>
+                        <StepTabsTrigger className={currentStep <= 4 ? 'border-b-white/30' : 'border-b-white text-white'} value="step4"></StepTabsTrigger>
+                        <StepTabsTrigger className={currentStep <= 5 ? 'border-b-white/30' : 'border-b-white text-white'} value="step5"></StepTabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="step1">
+                        <CartList />
+                    </TabsContent>
+                    <TabsContent value="step2">
+                        <UserDetails />
+                    </TabsContent>
+                    <TabsContent value="step3">
+                        <p>Payment</p>
+                    </TabsContent>
+                    <TabsContent value="step4">
+                        <p>Under Construction</p>
+                    </TabsContent>
+                    <TabsContent value="step5">
+                        <p>Under Construction</p>
+                    </TabsContent>
+
+                    <CartFooter currentStep={currentStep} nextStep={nextStep} prevStep={prevStep} />
+                </Tabs>
+            </form>
+        </Form>
+    )
+}

@@ -8,6 +8,7 @@ export const dummyEvents = [
         image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=200&fit=crop&crop=center",
         tickets: [
             {
+                id: 1,
                 title: "Cocktail Table 1-9",
                 description: "Minimum 1 bottle requirement",
                 pricing: {
@@ -16,6 +17,7 @@ export const dummyEvents = [
                 }
             },
             {
+                id: 2,
                 title: "Black Table 1-4",
                 description: "Minimum 2 bottles requirement",
                 pricing: {
@@ -34,6 +36,7 @@ export const dummyEvents = [
         image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=200&fit=crop&crop=center",
         tickets: [
             {
+                id: 3,
                 title: "VIP Table",
                 description: "Premium seating with bottle service",
                 pricing: {
@@ -42,6 +45,7 @@ export const dummyEvents = [
                 }
             },
             {
+                id: 4,
                 title: "Standard Table",
                 description: "Regular seating with minimum 2 bottles",
                 pricing: {
@@ -60,6 +64,7 @@ export const dummyEvents = [
         image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=200&fit=crop&crop=center",
         tickets: [
             {
+                id: 5,
                 title: "Sky Deck Table",
                 description: "Exclusive rooftop seating",
                 pricing: {
@@ -68,6 +73,7 @@ export const dummyEvents = [
                 }
             },
             {
+                id: 6,
                 title: "Garden Table",
                 description: "Outdoor garden area seating",
                 pricing: {
@@ -86,6 +92,7 @@ export const dummyEvents = [
         image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=200&fit=crop&crop=center",
         tickets: [
             {
+                id: 7,
                 title: "Grill Table A",
                 description: "Prime grilling location with minimum 1 bottle",
                 pricing: {
@@ -94,6 +101,7 @@ export const dummyEvents = [
                 }
             },
             {
+                id: 8,
                 title: "Patio Table B",
                 description: "Outdoor patio seating with minimum 2 bottles",
                 pricing: {
