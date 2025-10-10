@@ -45,10 +45,10 @@ export default function EventCard({ event }: EventCardProps) {
 
                         <div className="flex gap-2 w-full">
                             <Link href={`/events/${event.id}`} className='w-1/2'>
-                                <Button className='border border-white text-white w-full px-4 py-2 rounded hover:bg-white hover:text-black transition-colors'>View Event</Button>
+                                <Button variant={'outline'} className='w-full'>View Event</Button>
                             </Link>
                             <Link href={`/events/${event.id}/buy-tickets`} className='w-1/2'>
-                                <Button className='bg-white text-black w-full px-4 py-2 rounded hover:bg-gray-100 transition-colors'>
+                                <Button className='w-full'>
                                     <span>Buy Ticket</span>
                                     <ArrowRight />
                                 </Button>

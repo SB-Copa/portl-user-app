@@ -16,7 +16,7 @@ const CartOverview = ({ children }: CartOverviewProps) => {
         <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-[520px] p-4 rounded-t-xl bg-black/60 backdrop-blur-3xl outline outline-white/20">
             <div className="flex items-center justify-between ">
                 <div className="flex items-center gap-4">
-                    <div className="size-10 aspect-square bg-gradient-to-br font-bold text-base flex items-center justify-center rounded-full">
+                    <div className="size-10 aspect-square bg-gradient-to-br from-gray-900 ring ring-white/20 font-bold text-base flex items-center justify-center rounded-full">
                         {cartItemsCount}
                     </div>
 

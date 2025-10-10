@@ -1,14 +1,8 @@
 import { z } from "zod";
 import { eventTicketTypeSchema } from "./ticket-schema";
+import { venueSchema } from "./venue-schema";
 
-// export const EventTypeSchema = z.object({
-//   id: z.number(),
-//   type: z.string(),
-//   created_at: z.string(),
-//   updated_at: z.string(),
-// });
-
-export const EventSchema = z.object({
+export const eventSchema = z.object({
   id: z.number(),
   event_unique_id: z.string(),
   name: z.string(),
@@ -25,8 +19,11 @@ export const EventSchema = z.object({
   updated_at: z.string(),
   // event_type: EventTypeSchema,
   event_ticket_types: z.array(eventTicketTypeSchema),
+  venues: z.array(venueSchema),
 });
 
 
-export type Event = z.infer<typeof EventSchema>;
+
+
+export type Event = z.infer<typeof eventSchema>;
 // export type EventType = z.infer<typeof EventTypeSchema>;

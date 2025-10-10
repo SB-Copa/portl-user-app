@@ -19,7 +19,7 @@ export default function CartGlobalFooter() {
         <CartOverview>
             <CartOverviewActions>
                 <Link href="/cart">
-                    <Button variant="secondary">
+                    <Button>
                         View Cart
                     </Button>
                 </Link>

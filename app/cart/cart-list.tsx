@@ -47,15 +47,14 @@ export default function CartList() {
 
 
 function CartItem({ item }: { item: CartItemType }) {
-
     const { increaseQuantity, decreaseQuantity, removeFromCart } = useCart()
     return (
         <Card className='p-0 gap-0 overflow-clip border-none outline-2 outline-[#2d2c2c]'>
             <CardContent className='bg-gradient-to-br from-[#3a363b] via-[#0e0a0e] to-[#0e0a0e] text-white p-4'>
                 <div className="flex w-full justify-between gap-10 items-center">
                     <div className="flex flex-col gap-1">
-                        <h4>{item.name}</h4>
-                        <p className='font-bold'>
+                        <h4 className='text-base'>{item.name}</h4>
+                        <p className='font-bold text-sm'>
                             PHP {Number(item.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
 
@@ -70,7 +69,7 @@ function CartItem({ item }: { item: CartItemType }) {
                             <Button variant='ghost' onClick={() => increaseQuantity(item.id)}>+</Button>
                         </div>
 
-                        <Button variant='default' onClick={() => removeFromCart(item.id)}><Trash /></Button>
+                        <Button variant='ghost' onClick={() => removeFromCart(item.id)}><Trash /></Button>
                     </div>
 
                 </div>
