@@ -1,7 +1,5 @@
 'use client'
 
-import useCart from '@/hooks/use-cart'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 import { CartOverview, CartOverviewActions } from './cart-overview'
 import { Button } from '../ui/button'

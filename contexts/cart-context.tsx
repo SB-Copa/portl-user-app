@@ -2,7 +2,7 @@
 
 import useSessionStorage from '@/hooks/use-session-storage';
 import { CartItem } from '@/schema/ticket-schema';
-import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 
 type CartContextType = {
     cart: CartItem[];

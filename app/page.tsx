@@ -1,13 +1,7 @@
-import { dummyEvents } from '@/dummy/events'
 import React from 'react'
-import Image from 'next/image'
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import EventCard from '@/components/features/event/event-card'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Event } from '@/schema/event-schema'
-// import { Event } from '@/schema/EventSchema'
-
-
 
 export default async function Homepage() {
 
