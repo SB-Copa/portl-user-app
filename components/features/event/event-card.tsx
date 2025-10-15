@@ -47,7 +47,7 @@ export default function EventCard({ event }: EventCardProps) {
                             <Link href={`/events/${event.id}`} className='w-1/2'>
                                 <Button variant={'outline'} className='w-full'>View Event</Button>
                             </Link>
-                            <Link href={`/events/${event.id}/buy-tickets`} className='w-1/2'>
+                            <Link href={`/events/${event.id}/venues`} className='w-1/2'>
                                 <Button className='w-full'>
                                     <span>Buy Ticket</span>
                                     <ArrowRight />

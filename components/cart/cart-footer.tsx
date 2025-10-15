@@ -18,14 +18,14 @@ export default function CartFooter({ currentStep, nextStep, prevStep }: CartFoot
             <CartOverviewActions>
                 {
                     currentStep > 1 && (
-                        <Button variant="secondary" onClick={prevStep}>
+                        <Button variant="default" onClick={prevStep}>
                             Back
                         </Button>
                     )
                 }
                 {
                     currentStep < 5 && (
-                        <Button variant="secondary" onClick={nextStep}>
+                        <Button variant="default" onClick={nextStep}>
                             Next
                         </Button>
                     )
@@ -33,7 +33,7 @@ export default function CartFooter({ currentStep, nextStep, prevStep }: CartFoot
 
                 {
                     currentStep === 5 && (
-                        <Button variant="secondary" onClick={nextStep}>
+                        <Button variant="default" onClick={nextStep}>
                             Submit
                         </Button>
                     )

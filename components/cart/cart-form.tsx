@@ -1,9 +1,8 @@
 'use client'
 
-import { fullFormSchema, stepOneSchema, stepTwoSchema } from '@/schema/ticket-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Tabs, TabsContent } from '../ui/tabs'
 import { TabsList } from '@radix-ui/react-tabs'
@@ -13,22 +12,29 @@ import useCart from '@/hooks/use-cart'
 import CartFooter from './cart-footer'
 import UserDetails from './user-details'
 import { Form } from '../ui/form'
+import { fullFormSchema, stepOneSchema, stepTwoSchema } from '@/schema/cart-schema'
 
 export default function CartForm() {
     const [currentStep, setCurrentStep] = useState(1)
 
     const { cart } = useCart()
-
     const form = useForm<z.infer<typeof fullFormSchema>>({
         resolver: zodResolver(fullFormSchema),
-        mode: 'onChange',
         defaultValues: {
-            tickets: cart
+            tickets: cart.tickets,
+            tables: cart.tables
         }
     })
 
     // Remove the useEffect that was causing infinite loops
     // The form already gets cart data through defaultValues
+
+    useEffect(() => {
+        form.reset({
+            tickets: cart.tickets,
+            tables: cart.tables
+        })
+    }, [cart])
 
     const stepSchemas = [
         stepOneSchema,
@@ -36,13 +42,13 @@ export default function CartForm() {
     ]
 
     const nextStep = async () => {
-
         const schema = stepSchemas[currentStep - 1]
         const values = form.getValues()
+
+
+
+        console.log(values);
         const result = schema.safeParse(values)
-
-        console.log(result.error)
-
 
         if (!result.success) {
             // trigger validation for this step
