@@ -10,8 +10,6 @@ export default function Payment() {
     const { cart, allTicketsPerEvent } = useCart()
     const { getValues } = useFormContext()
 
-
-
     const handleCheckout = async () => {
         const values = getValues()
         const { tickets, tables, ...formValues } = values;
