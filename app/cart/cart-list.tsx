@@ -1,10 +1,14 @@
 'use client'
+import TableCard from '@/components/features/buy-ticket/table-card'
+import PageHeader from '@/components/layout/page-header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import useCart from '@/hooks/use-cart'
+import { asyncFetch } from '@/lib/asyncFetch'
 import { CartTicket, CartVenueTable } from '@/schema/cart-schema'
+import { Event } from '@/schema/event-schema'
 import { Trash } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function CartList() {
     const { ticketsByEvent, tablesByEvent } = useCart()
@@ -13,12 +17,43 @@ export default function CartList() {
     //     return items.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0)
     // }
 
-    const calculateTableTotalAmountPerEvent = (items: CartVenueTable[]) => {
-        return items.reduce((acc, item) => acc + parseFloat(item.price), 0)
-    }
+    // const calculateTableTotalAmountPerEvent = (items: CartVenueTable[]) => {
+    //     return items.reduce((acc, item) => acc + parseFloat(item.price), 0)
+    // }
+
+    // const test = Object.entries(tablesByEvent).reduce((acc, [eventName, items]) => {
+    //     acc[eventName] = items.reduce((acc, item) => acc + parseFloat(item.price), 0)
+    //     return acc
+    // }, {} as Record<string, number>)
+
+
+    // const groupedtables = Object.entries(tablesByEvent).reduce((acc, [eventName, items]) => {
+    //     if (!acc[eventName]) {
+    //         acc[eventName] = {}
+    //     }
+
+    //     acc[eventName] = items.reduce((acc, item) => {
+
+    //         if (!acc[item.table_name]) {
+    //             acc[item.table_name] = []
+    //         }
+
+    //         acc[item.table_name].push(item)
+
+    //         return acc
+
+    //     }, {} as Record<string, CartVenueTable[]>)
+
+    //     return acc
+    // }, {} as Record<string, Record<string, CartVenueTable[]>>);
+
+    // return <></>
+
 
     return (
-        <div className='flex flex-col gap-10'>
+        <div className='flex flex-col gap-10 w-full'>
+            <PageHeader title={'Cart'} showBackButton />
+
             {
                 Object.keys(ticketsByEvent).length > 0 && (
                     <>
@@ -46,31 +81,34 @@ export default function CartList() {
                     <>
                         <h2>Tables</h2>
 
-                        {
-                            Object.entries(tablesByEvent).map(([eventName, items]) => (
-                                <div key={eventName} className='flex flex-col gap-4'>
+                        <CartTableItem eventId={Object.values(tablesByEvent)[0][0].event_id} venueId={Object.values(tablesByEvent)[0][0].venue_id} />
+
+                        {/* {
+                            Object.entries(tablesByEvent).map(([eventName, items], index) => (
+                                <div key={index} className='flex flex-col gap-4'>
 
 
                                     <div className="flex justify-between items-end">
-                                        <h3 className='text-xl font-bold'>{eventName} <span className='text-sm text-white/50 font-normal'>| {items.length} items</span></h3>
+                                        <h3 className='text-xl font-bold'>{eventName} <span className='text-sm text-white/50 font-normal'>| {Object.keys(items).length} items</span></h3>
 
                                         <p className='text-sm text-white/50'>
-                                            PHP {calculateTableTotalAmountPerEvent(items).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            PHP {calculateTableTotalAmountPerEvent(Object.values(items)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                         </p>
 
                                     </div>
 
 
-                                    <div className="flex flex-col gap-2">
-                                        {
-                                            items.map((item) => (
-                                                <CartTableItem key={item.venue_table_id} item={item} />
-                                            ))
-                                        }
-                                    </div>
+                                    {
+                                        Object.values(items).map((item, index) => (
+                                            <CartTableItem key={index} item={item} />
+                                        ))
+                                    }
+
+
                                 </div>
+
                             ))
-                        }
+                        } */}
                     </>
                 )
             }
@@ -112,32 +150,41 @@ function CartTicketItem({ item }: { item: CartTicket }) {
     )
 }
 
-function CartTableItem({ item }: { item: CartVenueTable }) {
+function CartTableItem({ eventId, venueId }: { eventId: number, venueId: number }) {
 
-    const { removeTable } = useCart()
+    const { removeTable, cart } = useCart()
+
+    const [event, setEvent] = useState<Event | null>(null)
+
+    const tables = cart.tables.map(table => table.venue_table_name_id);
+
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            const res = await asyncFetch.get(`/admin/events/${eventId}/venues/${venueId}/tables`)
+
+            if (!res.ok) return
+            const data = await res.json()
+            setEvent(data)
+        }
+        fetchEvent()
+    }, [eventId, venueId])
+
+
+    if (!event) return <></> // TODO: add loading state
+
+    const venue = event.venues[0]
+    const venueTableNames = venue.venue_table_names
+
+    const filteredTableNames = venueTableNames.filter((tableName) => tables.includes(tableName.id))
 
     return (
-        <Card className='p-0 gap-0 overflow-clip border-none outline-2 outline-[#2d2c2c]'>
-            <CardContent className='flex flex-col gap-10 bg-gradient-to-br from-[#3a363b] via-[#0e0a0e] to-[#0e0a0e] text-white p-4'>
-
-                <div className="flex flex-col">
-                    <h2 className='text-xl font-bold'>{item.table_name}</h2>
-                    <p><span className='font-bold'>PHP {parseFloat(item.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> / {item.max_capacity} pax</p>
-                    <p className='italic text-sm'>{item.legend}</p>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                    <h3 className='text-white/50 text-sm'>Choose Table</h3>
-
-                    <div className="flex flex-wrap gap-2">
-                        {/* {
-                            item.venue_tables.map((table) => (
-                                <TableCardToggle event={event} table={table} tableRequirements={tableRequirements} key={table.id} />
-                            ))
-                        } */}
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
+        <>
+            {
+                filteredTableNames.map((tableName) => (
+                    <TableCard key={tableName.id} event={event} venueTableName={tableName} showDetails/>
+                ))
+            }
+        </>
     )
 }

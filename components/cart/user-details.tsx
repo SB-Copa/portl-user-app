@@ -12,6 +12,7 @@ import { CartTicket, CartVenueTable } from '@/schema/cart-schema'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from '../ui/button'
+import PageHeader from '../layout/page-header'
 
 type CartItem =
     | (CartTicket & {
@@ -21,7 +22,7 @@ type CartItem =
         type: 'table'
     })
 
-export default function UserDetails() {
+export default function UserDetails({ prevStep }: { prevStep: () => void }) {
     const { register, setValue, getValues, watch } = useFormContext()
 
     const { ticketsByEvent, tablesByEvent } = useCart()
@@ -102,195 +103,198 @@ export default function UserDetails() {
 
     return (
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-10">
 
-            <div className="flex flex-col gap-1">
-                {/* <div className="flex gap-2 items-center"> */}
-                <h2 className='text-lg font-bold'>Primary guest</h2>
-                {/* <Tooltip>
-                        <TooltipTrigger>
-                            <CircleQuestionMark size={14} />
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom' align='center'>
-                            <p className='text-xs'>This is a tool tip</p>
-                        </TooltipContent>
-                    </Tooltip> */}
-                {/* </div> */}
-
-                <p className='text-sm'>All tickets will be automatically filled with the primary guest’s details. Please make sure the information you provide in the form is correct.</p>
-            </div>
+            <PageHeader title={'User Details'} showBackButton backButtonOnClick={prevStep} />
 
 
-            <InputGroup>
-                <Select onValueChange={handleSelectPrimaryTicket}>
-                    <SelectTrigger className='w-full border-none cursor-pointer'>
-                        <SelectValue placeholder="Choose" />
-                    </SelectTrigger>
-                    <SelectContent className=' text-secondary-foreground border-none bg-[#2f2f2e]'>
-
-                        <SelectGroup >
-                            <SelectLabel className='font-bold text-sm'>Tables</SelectLabel>
-                            {
-                                Object.entries(tablesByEvent).map(([eventName, items], index: number) => (
-
-                                    <SelectGroup key={index}>
-                                        <SelectLabel>{eventName}</SelectLabel>
-                                        {
-                                            items.map((item, index: number) => (
-                                                <SelectItem
-                                                    key={index}
-                                                    value={`table-${item.venue_table_id.toString()}`}
-                                                    disabled={isAtFullCapacity(item, 'table') && !isCurrentlyPrimary(item, 'table')}
-                                                >
-                                                    <div className="flex flex-col gap-1 items-start text-start">
-                                                        <span>
-                                                            {item.table_name}
-                                                        </span>
-
-                                                        {
-                                                            isAtFullCapacity(item, 'table') && !isCurrentlyPrimary(item, 'table') && (
-                                                                <span className='text-xs text-white/50 italic'>
-                                                                    This table is at full capacity, remove at least 1 guest to select this table.
-                                                                </span>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </SelectItem>
-                                            ))
-                                        }
-                                    </SelectGroup>
-
-                                ))
-                            }
-                        </SelectGroup>
-
-                        <SelectGroup className='mt-5'>
-                            <SelectLabel className='font-bold text-sm'>Tickets</SelectLabel>
-                            {
-                                Object.entries(ticketsByEvent).map(([eventName, items], index: number) => (
-
-                                    <SelectGroup key={index}>
-                                        <SelectLabel>{eventName}</SelectLabel>
-                                        {
-                                            items.map((item, index: number) => (
-                                                <SelectItem
-                                                    key={index}
-                                                    value={`ticket-${item.event_ticket_type_id.toString()}`}
-                                                    disabled={isAtFullCapacity(item, 'ticket') && !isCurrentlyPrimary(item, 'ticket')}
-                                                >
-                                                    <div className="flex flex-col gap-1 items-start text-start">
-                                                        <span>
-                                                            {item.name}
-                                                        </span>
-
-                                                        {
-                                                            isAtFullCapacity(item, 'ticket') && !isCurrentlyPrimary(item, 'ticket') && (
-                                                                <span className='text-xs text-white/50 italic'>
-                                                                    This ticket is at full capacity, remove at least 1 guest to select this ticket.
-                                                                </span>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </SelectItem>
-                                            ))
-                                        }
-                                    </SelectGroup>
-
-                                ))
-                            }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-                <InputGroupAddon align="block-start">
-
-                    <div className="flex gap-2">
-                        <Label htmlFor="first-name" className='text-xs'>
-                            Select Primary Ticket
-                        </Label>
-
-                        <Tooltip>
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                    {/* <div className="flex gap-2 items-center"> */}
+                    <h2>Primary guest</h2>
+                    {/* <Tooltip>
                             <TooltipTrigger>
                                 <CircleQuestionMark size={14} />
                             </TooltipTrigger>
                             <TooltipContent side='bottom' align='center'>
                                 <p className='text-xs'>This is a tool tip</p>
                             </TooltipContent>
-                        </Tooltip>
+                        </Tooltip> */}
+                    {/* </div> */}
 
-                    </div>
-                </InputGroupAddon>
-            </InputGroup>
+                    <p className='text-sm'>All tickets will be automatically filled with the primary guest’s details. Please make sure the information you provide in the form is correct.</p>
+                </div>
 
-            <div className="grid grid-cols-2 w-full gap-4">
 
                 <InputGroup>
-                    <InputGroupInput id="first-name" className='text-white ' {...register('firstName')} />
+                    <Select onValueChange={handleSelectPrimaryTicket}>
+                        <SelectTrigger className='w-full border-none cursor-pointer'>
+                            <SelectValue placeholder="Choose" />
+                        </SelectTrigger>
+                        <SelectContent className=' text-secondary-foreground border-none bg-[#2f2f2e]'>
+
+                            <SelectGroup >
+                                <SelectLabel className='font-bold text-sm'>Tables</SelectLabel>
+                                {
+                                    Object.entries(tablesByEvent).map(([eventName, items], index: number) => (
+
+                                        <SelectGroup key={index}>
+                                            <SelectLabel>{eventName}</SelectLabel>
+                                            {
+                                                items.map((item, index: number) => (
+                                                    <SelectItem
+                                                        key={index}
+                                                        value={`table-${item.venue_table_id.toString()}`}
+                                                        disabled={isAtFullCapacity(item, 'table') && !isCurrentlyPrimary(item, 'table')}
+                                                    >
+                                                        <div className="flex flex-col gap-1 items-start text-start">
+                                                            <span>
+                                                                {item.table_name} - {item.legend}
+                                                            </span>
+
+                                                            {
+                                                                isAtFullCapacity(item, 'table') && !isCurrentlyPrimary(item, 'table') && (
+                                                                    <span className='text-xs text-white/50 italic'>
+                                                                        This table is at full capacity, remove at least 1 guest to select this table.
+                                                                    </span>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </SelectItem>
+                                                ))
+                                            }
+                                        </SelectGroup>
+
+                                    ))
+                                }
+                            </SelectGroup>
+
+                            <SelectGroup className='mt-5'>
+                                <SelectLabel className='font-bold text-sm'>Tickets</SelectLabel>
+                                {
+                                    Object.entries(ticketsByEvent).map(([eventName, items], index: number) => (
+
+                                        <SelectGroup key={index}>
+                                            <SelectLabel>{eventName}</SelectLabel>
+                                            {
+                                                items.map((item, index: number) => (
+                                                    <SelectItem
+                                                        key={index}
+                                                        value={`ticket-${item.event_ticket_type_id.toString()}`}
+                                                        disabled={isAtFullCapacity(item, 'ticket') && !isCurrentlyPrimary(item, 'ticket')}
+                                                    >
+                                                        <div className="flex flex-col gap-1 items-start text-start">
+                                                            <span>
+                                                                {item.name}
+                                                            </span>
+
+                                                            {
+                                                                isAtFullCapacity(item, 'ticket') && !isCurrentlyPrimary(item, 'ticket') && (
+                                                                    <span className='text-xs text-white/50 italic'>
+                                                                        This ticket is at full capacity, remove at least 1 guest to select this ticket.
+                                                                    </span>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </SelectItem>
+                                                ))
+                                            }
+                                        </SelectGroup>
+
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <InputGroupAddon align="block-start">
-                        <Label htmlFor="first-name" className='text-xs'>
-                            First Name
-                        </Label>
+
+                        <div className="flex gap-2">
+                            <Label htmlFor="first-name" className='text-xs'>
+                                Select Primary Ticket
+                            </Label>
+
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <CircleQuestionMark size={14} />
+                                </TooltipTrigger>
+                                <TooltipContent side='bottom' align='center'>
+                                    <p className='text-xs'>This is a tool tip</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                        </div>
                     </InputGroupAddon>
                 </InputGroup>
 
-                <InputGroup>
-                    <InputGroupInput id="last-name" className='text-white' {...register('lastName')} />
-                    <InputGroupAddon align="block-start">
-                        <Label htmlFor="last-name" className='text-xs'>
-                            Last Name
-                        </Label>
-                    </InputGroupAddon>
-                </InputGroup>
-
-                <InputGroup>
-                    <InputGroupInput id="email" className='text-white' {...register('email')} />
-                    <InputGroupAddon align="block-start">
-                        <Label htmlFor="email" className='text-xs'>
-                            Email
-                        </Label>
-                    </InputGroupAddon>
-                </InputGroup>
-
-
-                <div className="flex flex-col relative">
+                <div className="grid grid-cols-2 w-full gap-4">
 
                     <InputGroup>
-                        <InputGroupInput
-                            type='date'
-                            id="birthdate"
-                            className='text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-100'
-                            {...register('birthDate')}
-                        />
+                        <InputGroupInput id="first-name" className='text-white ' {...register('firstName')} />
                         <InputGroupAddon align="block-start">
-                            <Label htmlFor="birthdate" className='text-xs'>
-                                Birthdate
+                            <Label htmlFor="first-name" className='text-xs'>
+                                First Name
                             </Label>
                         </InputGroupAddon>
                     </InputGroup>
 
-                    <p className='absolute top-[calc(100%+6px)] left-0 text-xs text-white/50'>Must be 18+ years old</p>
+                    <InputGroup>
+                        <InputGroupInput id="last-name" className='text-white' {...register('lastName')} />
+                        <InputGroupAddon align="block-start">
+                            <Label htmlFor="last-name" className='text-xs'>
+                                Last Name
+                            </Label>
+                        </InputGroupAddon>
+                    </InputGroup>
+
+                    <InputGroup>
+                        <InputGroupInput id="email" className='text-white' {...register('email')} />
+                        <InputGroupAddon align="block-start">
+                            <Label htmlFor="email" className='text-xs'>
+                                Email
+                            </Label>
+                        </InputGroupAddon>
+                    </InputGroup>
+
+
+                    <div className="flex flex-col relative">
+
+                        <InputGroup>
+                            <InputGroupInput
+                                type='date'
+                                id="birthdate"
+                                className='text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-100'
+                                {...register('birthDate')}
+                            />
+                            <InputGroupAddon align="block-start">
+                                <Label htmlFor="birthdate" className='text-xs'>
+                                    Birthdate
+                                </Label>
+                            </InputGroupAddon>
+                        </InputGroup>
+
+                        <p className='absolute top-[calc(100%+6px)] left-0 text-xs text-white/50'>Must be 18+ years old</p>
+
+                    </div>
 
                 </div>
 
+
+                <hr className='mt-5' />
+
+                <h2>Other guest/s</h2>
+
+                {
+                    tables.map((table, index: number) => (
+                        <CartItemGuests key={index} item={{ type: 'table', ...table }} />
+                    ))
+                }
+
+                {
+                    tickets.map((ticket, index: number) => (
+                        <CartItemGuests key={index} item={{ type: 'ticket', ...ticket }} />
+                    ))
+                }
             </div>
-
-
-            <hr className='mt-5' />
-
-            <h2 className='text-lg font-bold'>Other guest/s</h2>
-
-            {
-                tables.map((table, index: number) => (
-                    <CartItemGuests key={index} item={{ type: 'table', ...table }} />
-                ))
-            }
-
-            {
-                tickets.map((ticket, index: number) => (
-                    <CartItemGuests key={index} item={{ type: 'ticket', ...ticket }} />
-                ))
-            }
-
-
         </div>
     )
 }
@@ -468,7 +472,7 @@ const GuestForm = ({ fieldName, onRemove, index }: GuestFormProps) => {
                 </InputGroupAddon>
             </InputGroup>
 
-            <Button onClick={onRemove} variant={'ghost'}  size={'icon'}><Trash /></Button>
+            <Button onClick={onRemove} variant={'ghost'} size={'icon'}><Trash /></Button>
         </div>
     )
 }

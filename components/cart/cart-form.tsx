@@ -4,15 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Tabs, TabsContent } from '../ui/tabs'
-import { TabsList } from '@radix-ui/react-tabs'
-import StepTabsTrigger from './step-tabs-trigger'
 import CartList from '@/app/cart/cart-list'
 import useCart from '@/hooks/use-cart'
-import CartFooter from './cart-footer'
 import UserDetails from './user-details'
 import { Form } from '../ui/form'
 import { fullFormSchema, stepOneSchema, stepTwoSchema } from '@/schema/cart-schema'
+import CartFooter from './cart-footer'
 
 export default function CartForm() {
     const [currentStep, setCurrentStep] = useState(1)
@@ -68,8 +65,8 @@ export default function CartForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                <Tabs value={`step${currentStep}`} defaultValue="step1" className="flex-1 w-full flex flex-col gap-10">
+            <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
+                {/* <Tabs value={`step${currentStep}`} defaultValue="step1" className="flex-1 w-full flex flex-col gap-10">
                     <TabsList className='flex w-full bg-transparent gap-0 rounded-none p-0'>
                         <StepTabsTrigger className={currentStep <= 1 ? 'border-b-white/30' : 'border-b-white text-white'} value="step1"></StepTabsTrigger>
                         <StepTabsTrigger className={currentStep <= 2 ? 'border-b-white/30' : 'border-b-white text-white'} value="step2"></StepTabsTrigger>
@@ -94,9 +91,22 @@ export default function CartForm() {
                         <p>Under Construction</p>
                     </TabsContent>
 
-                    <CartFooter currentStep={currentStep} nextStep={nextStep} prevStep={prevStep} />
-                </Tabs>
+                    </Tabs> */}
+                <RenderStep currentStep={currentStep} prevStep={prevStep}/>
+                <CartFooter currentStep={currentStep} nextStep={nextStep} prevStep={prevStep} />
             </form>
         </Form>
     )
+}
+
+
+const RenderStep = ({ currentStep, prevStep }: { currentStep: number, prevStep: () => void }) => {
+    switch (currentStep) {
+        case 1:
+            return <CartList />
+        case 2:
+            return <UserDetails prevStep={prevStep} />
+        case 3:
+            return <p>Payment</p>
+    }
 }
