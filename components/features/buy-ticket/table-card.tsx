@@ -10,33 +10,63 @@ import React from 'react'
 type TableCardProps = {
     event: Event
     venueTableName: VenueTableName
+    showDetails?: boolean
 }
 
-export default function TableCard({ event, venueTableName }: TableCardProps) {
+export default function TableCard({ event, venueTableName, showDetails }: TableCardProps) {
 
     const tableRequirements = venueTableName.venue_table_requirements[0]
+    
+    const { cart } = useCart()
+
+    const tableCount = cart.tables.filter((table) => table.venue_table_name_id === venueTableName.id).length
+    const pax = cart.tables.filter((table) => table.venue_table_name_id === venueTableName.id).reduce((acc, table) => acc + table.max_capacity, 0)
+    const subtotal = cart.tables.filter((table) => table.venue_table_name_id === venueTableName.id).reduce((acc, table) => acc + parseFloat(table.price), 0)
 
     return (
         <Card className='p-0 gap-0 overflow-clip border-none outline-2 outline-[#2d2c2c]'>
-            <CardContent className='flex flex-col gap-10 bg-gradient-to-br from-[#3a363b] via-[#0e0a0e] to-[#0e0a0e] text-white p-4'>
+            <CardContent className='flex flex-col bg-gradient-to-br from-[#3a363b] via-[#0e0a0e] to-[#0e0a0e] text-white p-0'>
 
-                <div className="flex flex-col">
-                    <h2 className='text-xl font-bold'>{venueTableName.name}</h2>
-                    <p><span className='font-bold'>PHP {parseFloat(tableRequirements.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> / {tableRequirements.capacity} pax</p>
-                    <p className='italic text-sm'>{tableRequirements.description}</p>
-                </div>
+                <div className="flex flex-col gap-10 p-4">
+                    <div className="flex flex-col">
+                        <h2 className='text-xl font-bold'>{venueTableName.name}</h2>
+                        <p><span className='font-bold'>PHP {parseFloat(tableRequirements.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> / {tableRequirements.capacity} pax</p>
+                        <p className='italic text-sm'>{tableRequirements.description}</p>
+                    </div>
 
-                <div className="flex flex-col gap-2">
-                    <h3 className='text-white/50 text-sm'>Choose Table</h3>
+                    <div className="flex flex-col gap-2">
+                        <h3 className='text-white/50 text-sm'>Choose Table</h3>
 
-                    <div className="flex flex-wrap gap-2">
-                        {
-                            venueTableName.venue_tables.map((venueTable, index) => (
-                                <TableCardToggle key={index} event={event} venueTable={venueTable} venueTableName={venueTableName} tableRequirements={tableRequirements} />
-                            ))
-                        }
+                        <div className="flex flex-wrap gap-2">
+                            {
+                                venueTableName.venue_tables.map((venueTable, index) => (
+                                    <TableCardToggle key={index} event={event} venueTable={venueTable} venueTableName={venueTableName} tableRequirements={tableRequirements} />
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
+
+                {
+                    (showDetails && pax > 0) && (
+                        <div className="p-4 border-t border-[#2d2c2c] border-dashed grid grid-cols-3">
+                            <div className="flex flex-col gap-2">
+                                <h3 className='text-white/50 text-sm'>Tables</h3>
+                                <p className='text-lg font-bold'>{tableCount}</p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <h3 className='text-white/50 text-sm'>Pax</h3>
+                                <p className='text-lg font-bold'>{pax}</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className='text-white/50 text-sm'>Subtotal (PHP)</h3>
+                                <p className='text-lg font-bold'>{subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                            </div>
+                        </div>
+                    )
+                }
+
             </CardContent>
         </Card>
     )
@@ -63,6 +93,7 @@ const TableCardToggle = ({ event, venueTable, venueTableName, tableRequirements 
                 venue_table_holder_type_id: 1,
                 price: tableRequirements.price,
                 event_name: event.name,
+                event_id: event.id,
                 table_name: venueTableName.name,
                 legend: venueTable.legend,
                 max_capacity: venueTable.capacity,

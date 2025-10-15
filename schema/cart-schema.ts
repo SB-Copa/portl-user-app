@@ -14,8 +14,9 @@ export const cartTicketGuestSchema = z.object({
 
 
 export const cartVenueTableSchema = z.object({
-    event_name: z.string(),
     table_name: z.string(),
+    event_name: z.string(),
+    event_id: z.number(),
     venue_id: z.number(),
     venue_table_id: z.number(),
     venue_table_name_id: z.number(),

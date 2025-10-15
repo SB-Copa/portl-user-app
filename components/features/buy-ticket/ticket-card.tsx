@@ -20,18 +20,23 @@ export default function TicketCard({ ticket, eventName, venueId }: TicketCardPro
     }
 
     const handleAddTicket = () => {
-        addTicket({
-            event_ticket_type_id: ticket.id,
-            quantity: 1,
-            price: ticket.price,
-            event_name: eventName,
-            name: ticket.name,
-            venue_id: Number(venueId),
-            max_capacity: 1,
-        })
+        const currentQuantity = cartTicket?.quantity || 0
+        if (currentQuantity < ticket.available_tickets) {
+            addTicket({
+                event_ticket_type_id: ticket.id,
+                quantity: 1,
+                price: ticket.price,
+                event_name: eventName,
+                name: ticket.name,
+                venue_id: Number(venueId),
+                max_capacity: 1,
+            })
+        }
     }
 
     const cartTicket = getTicketCartItem(ticket.id)
+
+    const isAtCapacity = (cartTicket?.quantity || 0) >= ticket.available_tickets
 
     return (
         <Card className='p-0 gap-0 overflow-clip border-none outline-2 outline-[#2d2c2c]'>
@@ -53,8 +58,16 @@ export default function TicketCard({ ticket, eventName, venueId }: TicketCardPro
                         <div className="flex items-center w-full justify-between">
                             <Button className='text-2xl' variant={'ghost'} onClick={handleRemoveTicket}>-</Button>
                             <p className='text-lg'>{cartTicket?.quantity || 0}</p>
-                            <Button className='text-2xl' variant={'ghost'} onClick={handleAddTicket}>+</Button>
+                            <Button 
+                                className={`text-2xl ${isAtCapacity && 'opacity-50 cursor-not-allowed'}` }
+                                variant={'ghost'} 
+                                onClick={handleAddTicket}
+                                disabled={isAtCapacity}
+                            >+</Button>
                         </div>
+                        <p className='text-xs text-white/50 mt-1'>
+                            {ticket.available_tickets - (cartTicket?.quantity || 0)} tickets remaining
+                        </p>
                     </div>
                 </div>
             </CardContent>
