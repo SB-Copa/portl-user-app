@@ -229,7 +229,7 @@ export default function UserDetails({ prevStep }: { prevStep: () => void }) {
                 <div className="grid grid-cols-2 w-full gap-4">
 
                     <InputGroup>
-                        <InputGroupInput id="first-name" className='text-white ' {...register('firstName')} />
+                        <InputGroupInput id="first-name" className='text-white ' {...register('first_name')} />
                         <InputGroupAddon align="block-start">
                             <Label htmlFor="first-name" className='text-xs'>
                                 First Name
@@ -238,7 +238,7 @@ export default function UserDetails({ prevStep }: { prevStep: () => void }) {
                     </InputGroup>
 
                     <InputGroup>
-                        <InputGroupInput id="last-name" className='text-white' {...register('lastName')} />
+                        <InputGroupInput id="last-name" className='text-white' {...register('last_name')} />
                         <InputGroupAddon align="block-start">
                             <Label htmlFor="last-name" className='text-xs'>
                                 Last Name
@@ -263,7 +263,7 @@ export default function UserDetails({ prevStep }: { prevStep: () => void }) {
                                 type='date'
                                 id="birthdate"
                                 className='text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-100'
-                                {...register('birthDate')}
+                                {...register('birthdate')}
                             />
                             <InputGroupAddon align="block-start">
                                 <Label htmlFor="birthdate" className='text-xs'>

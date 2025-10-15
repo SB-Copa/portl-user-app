@@ -46,6 +46,11 @@ type CartContextType = {
     // Grouped data
     ticketsByEvent: Record<string, CartTicket[]>;
     tablesByEvent: Record<string, CartVenueTable[]>;
+    allTicketsPerEvent: {
+        event_id: number;
+        event_tickets: CartTicket[];
+        venue_table_reservations: CartVenueTable[];
+    }[];
 };
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -290,6 +295,52 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         }, {} as Record<string, CartVenueTable[]>);
     }, [cart.tables]);
 
+    const allTicketsPerEvent = useMemo(() => {
+        // Get all unique events from both tickets and tables
+        const eventIds = new Set<number>();
+
+        // Collect event IDs from tickets
+        cart.tickets.forEach(ticket => {
+            if (ticket.event_id) {
+                eventIds.add(ticket.event_id);
+            }
+        });
+
+        // Collect event IDs from tables
+        cart.tables.forEach(table => {
+            if (table.event_id) {
+                eventIds.add(table.event_id);
+            }
+        });
+
+        // Build the result object
+        // const result: Record<string, {
+        //     event_id: number;
+        //     event_tickets: CartTicket[];
+        //     venue_table_reservations: CartVenueTable[];
+        // }> = {};
+
+        const result: {
+            event_id: number;
+            event_tickets: CartTicket[];
+            venue_table_reservations: CartVenueTable[];
+        }[] = [];
+
+        eventIds.forEach(eventId => {
+            const eventTickets = cart.tickets.filter(ticket => ticket.event_id === eventId);
+
+            const eventTables = cart.tables.filter(table => table.event_id === eventId);
+
+            result.push({
+                event_id: eventId,
+                event_tickets: eventTickets,
+                venue_table_reservations: eventTables
+            })
+        });
+
+        return result;
+    }, [cart.tickets, cart.tables]);
+
     // ==================== CONTEXT VALUE ====================
 
     const value: CartContextType = {
@@ -328,6 +379,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         // Grouped data
         ticketsByEvent,
         tablesByEvent,
+        allTicketsPerEvent,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

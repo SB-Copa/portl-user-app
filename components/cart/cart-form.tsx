@@ -10,6 +10,7 @@ import UserDetails from './user-details'
 import { Form } from '../ui/form'
 import { fullFormSchema, stepOneSchema, stepTwoSchema } from '@/schema/cart-schema'
 import CartFooter from './cart-footer'
+import Payment from './payment'
 
 export default function CartForm() {
     const [currentStep, setCurrentStep] = useState(1)
@@ -62,7 +63,6 @@ export default function CartForm() {
         console.log("✅ Final form data:", data)
     }
 
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
@@ -92,7 +92,7 @@ export default function CartForm() {
                     </TabsContent>
 
                     </Tabs> */}
-                <RenderStep currentStep={currentStep} prevStep={prevStep}/>
+                <RenderStep currentStep={currentStep} prevStep={prevStep} />
                 <CartFooter currentStep={currentStep} nextStep={nextStep} prevStep={prevStep} />
             </form>
         </Form>
@@ -107,6 +107,6 @@ const RenderStep = ({ currentStep, prevStep }: { currentStep: number, prevStep: 
         case 2:
             return <UserDetails prevStep={prevStep} />
         case 3:
-            return <p>Payment</p>
+            return <Payment />
     }
 }

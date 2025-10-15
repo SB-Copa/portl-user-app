@@ -3,6 +3,7 @@
 import React from 'react'
 import { CartOverview, CartOverviewActions } from './cart-overview'
 import { Button } from '../ui/button'
+import { ArrowRight } from 'lucide-react'
 
 type CartFooterProps = {
     currentStep: number
@@ -13,31 +14,24 @@ type CartFooterProps = {
 
 export default function CartFooter({ currentStep, nextStep, prevStep }: CartFooterProps) {
 
+    const getButtonLabelByStep = (step: number) => {
+        switch (step) {
+            case 1:
+                return 'Next'
+            case 2:
+                return 'Payment'
+        }
+    }
+
+
     return (
         <CartOverview>
             <CartOverviewActions>
-                {
-                    currentStep > 1 && (
-                        <Button variant="default" onClick={prevStep}>
-                            Back
-                        </Button>
-                    )
-                }
-                {
-                    currentStep < 5 && (
-                        <Button variant="default" onClick={nextStep}>
-                            Next
-                        </Button>
-                    )
-                }
 
-                {
-                    currentStep === 5 && (
-                        <Button variant="default" onClick={nextStep}>
-                            Submit
-                        </Button>
-                    )
-                }
+                <Button variant="default" onClick={nextStep}>
+                    {getButtonLabelByStep(currentStep)}
+                    <ArrowRight />
+                </Button>
             </CartOverviewActions>
         </CartOverview>
     )

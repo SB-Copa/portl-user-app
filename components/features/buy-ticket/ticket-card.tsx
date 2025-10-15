@@ -24,6 +24,7 @@ export default function TicketCard({ ticket, eventName, venueId }: TicketCardPro
         if (currentQuantity < ticket.available_tickets) {
             addTicket({
                 event_ticket_type_id: ticket.id,
+                event_id: ticket.event_id,
                 quantity: 1,
                 price: ticket.price,
                 event_name: eventName,

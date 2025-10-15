@@ -31,6 +31,7 @@ export const cartVenueTableSchema = z.object({
 
 export const cartTicketSchema = z.object({
     event_ticket_type_id: z.number(),
+    event_id: z.number(),
     name: z.string(),
     venue_id: z.number(),
     quantity: z.number(),
@@ -52,11 +53,11 @@ export const stepOneSchema = z.object({
 })
 
 export const stepTwoSchema = z.object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
+    first_name: z.string().min(1),
+    last_name: z.string().min(1),
     email: z.email(),
-    birthDate: z.string(),
-    invitedBy: z.string().min(1).optional(),
+    birthdate: z.string(),
+    // invited_by: z.string().min(1).optional(),
 })
 
 export const fullFormSchema = z.intersection(stepOneSchema, stepTwoSchema)
