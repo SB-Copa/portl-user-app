@@ -3,32 +3,35 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import useCart from '@/hooks/use-cart'
-import { EventTicketType } from '@/schema/ticket-schema'
+import { EventTicket } from '@/schema/ticket-schema'
 import React from 'react'
 
 type TicketCardProps = {
-    ticket: EventTicketType
+    ticket: EventTicket
     eventName: string
+    venueId: string
 }
 
-export default function TicketCard({ ticket, eventName }: TicketCardProps) {
-    const { addToCart, decreaseQuantity, getCartItem } = useCart()
+export default function TicketCard({ ticket, eventName, venueId }: TicketCardProps) {
+    const { addTicket, decreaseTicketQuantity, getTicketCartItem } = useCart()
 
     const handleRemoveTicket = () => {
-        decreaseQuantity(ticket.id)
+        decreaseTicketQuantity(ticket.id)
     }
 
     const handleAddTicket = () => {
-        addToCart({
-            id: ticket.id,
+        addTicket({
+            event_ticket_type_id: ticket.id,
             quantity: 1,
             price: ticket.price,
             event_name: eventName,
-            name: ticket.name
+            name: ticket.name,
+            venue_id: Number(venueId),
+            max_capacity: 1,
         })
     }
 
-    const cartTicket = getCartItem(ticket.id)
+    const cartTicket = getTicketCartItem(ticket.id)
 
     return (
         <Card className='p-0 gap-0 overflow-clip border-none outline-2 outline-[#2d2c2c]'>

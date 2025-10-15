@@ -15,13 +15,25 @@ const venueTableSchema = z.object({
     updated_at: z.string(),
 });
 
-const venueTableNameSchema = z.object({
+const venueTableRequirementSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    description: z.string(),
+    price: z.string(),
+    capacity: z.number(),
+    created_at: z.string(),
+    updated_at: z.string(),
+});
+
+
+export const venueTableNameSchema = z.object({
     id: z.number(),
     name: z.string(),
     venue_id: z.number(),
     created_at: z.string(),
     updated_at: z.string(),
     venue_tables: z.array(venueTableSchema),
+    venue_table_requirements: z.array(venueTableRequirementSchema),
 });
 
 const venueStatusSchema = z.object({
@@ -71,4 +83,5 @@ export const venueSchema = z.object({
 export type Venue = z.infer<typeof venueSchema>;
 export type VenueTable = z.infer<typeof venueTableSchema>;
 export type VenueTableName = z.infer<typeof venueTableNameSchema>;
+export type VenueTableRequirement = z.infer<typeof venueTableRequirementSchema>;
 export type VenueStatus = z.infer<typeof venueStatusSchema>;

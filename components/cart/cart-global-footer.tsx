@@ -8,12 +8,12 @@ import Link from 'next/link'
 import { Button } from '../ui/button'
 
 export default function CartGlobalFooter() {
-    const { cartItemsCount } = useCart()
+    const { totalItemCount } = useCart()
 
     const pathname = usePathname()
     const isCartPage = pathname.split('/').includes('cart')
 
-    if (cartItemsCount === 0 || isCartPage) return null
+    if (totalItemCount === 0 || isCartPage) return null
 
     return (
         <CartOverview>
