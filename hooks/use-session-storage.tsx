@@ -1,5 +1,3 @@
-
-
 export default function useSessionStorage() {
 
     const setValue = (key: string, value: Record<string, unknown> | unknown[]) => {
