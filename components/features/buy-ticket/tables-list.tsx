@@ -9,7 +9,7 @@ type TablesListProps = {
 }
 
 export default async function TablesList({ eventId, venueId }: TablesListProps) {
-    const res = await asyncFetch.get(`/admin/events/${eventId}/venues/${venueId}/tables`)
+    const res = await asyncFetch.get(`/events/${eventId}/venues/${venueId}/tables`)
     const event = await res.json() as Event
     const venue = event.venues[0]
     const venueTableNames = venue.venue_table_names

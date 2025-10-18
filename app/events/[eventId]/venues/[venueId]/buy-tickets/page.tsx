@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TicketsList from '@/components/features/buy-ticket/tickets-list'
 import TablesList from '@/components/features/buy-ticket/tables-list'
 import Link from 'next/link'
+import { Venue } from '@/schema/venue-schema'
 
 type BuyTicketsProps = {
     params: {
@@ -21,12 +22,13 @@ export default async function BuyTickets({ params, searchParams }: BuyTicketsPro
     const { tab } = await searchParams
     const { eventId, venueId } = await params
 
-    const res = await asyncFetch.get(`/admin/events/${eventId}/venues/${venueId}`)
-    const event = await res.json() as Event
+    const res = await asyncFetch.get(`/events/${eventId}/venues/${venueId}`)
+    const event = await res.json() as Event 
+    const venue = event.venues[0] as Venue;
 
     return (
         <div className="flex flex-col items-center w-full gap-10 py-4 min-h-screen">
-            <PageHeader title={event.name} showBackButton />
+            <PageHeader title={event.name} description={venue?.name} showBackButton backButtonLink={`/events/${eventId}/venues`} />
 
             <div className="flex flex-col w-full h-full flex-1 gap-3">
 

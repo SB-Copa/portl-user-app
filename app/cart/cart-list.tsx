@@ -161,7 +161,7 @@ function CartTableItem({ eventId, venueId }: { eventId: number, venueId: number 
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const res = await asyncFetch.get(`/admin/events/${eventId}/venues/${venueId}/tables`)
+            const res = await asyncFetch.get(`/events/${eventId}/venues/${venueId}/tables`)
 
             if (!res.ok) return
             const data = await res.json()

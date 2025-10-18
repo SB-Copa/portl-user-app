@@ -38,7 +38,7 @@ export default function Payment() {
             }
         })
 
-        const res = await asyncFetch.post('/guest/purchase-ticket', {
+        const res = await asyncFetch.post('/purchase-ticket', {
             body: JSON.stringify({
                 ...formValues,
                 events: modifiedAllTicketsPerEvent,
