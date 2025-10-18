@@ -11,10 +11,10 @@ const methods: HTTPMethod[] = ['get', 'post', 'put', 'patch', 'delete'];
 export const asyncFetch: AsyncFetch = methods.reduce((acc, method) => {
   acc[method] = async (url, init) => {
     const token = null;
-    
+
     // Determine the full URL - if it's a relative path, prepend the base URL
-    const fullUrl = url.startsWith('http://') || url.startsWith('https://') 
-      ? url 
+    const fullUrl = url.startsWith('http://') || url.startsWith('https://')
+      ? url
       : `${BASE_URL}${url}`;
 
     const response = await fetch(fullUrl, {
@@ -25,6 +25,7 @@ export const asyncFetch: AsyncFetch = methods.reduce((acc, method) => {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         ...init?.headers,
       },
+      credentials: 'include',
     });
 
     // Optional: handle HTTP errors here
