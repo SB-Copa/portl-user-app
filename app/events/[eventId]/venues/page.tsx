@@ -20,10 +20,10 @@ export default async function EventVenues({ params }: EventVenuesProps) {
 
     return (
         <div className="flex flex-col items-center w-full gap-10 py-4">
-            <PageHeader title={`${event.name} Venues`} showBackButton />
+            <PageHeader title={`${event.name} Venues`} showBackButton backButtonLink={`/`} />
 
             <div className="flex flex-col">
-                {
+            {
                     venues.map((venue: Venue) => (
                         <VenueCard event={event} venue={venue} key={venue.id} />
                     ))
