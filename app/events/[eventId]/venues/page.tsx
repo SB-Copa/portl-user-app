@@ -13,7 +13,7 @@ type EventVenuesProps = {
 export default async function EventVenues({ params }: EventVenuesProps) {
     const { eventId } = await params
 
-    const res = await asyncFetch.get(`/admin/events/${eventId}/venues`)
+    const res = await asyncFetch.get(`/events/${eventId}/venues`)
 
     const event = await res.json()
     const venues = event.venues;

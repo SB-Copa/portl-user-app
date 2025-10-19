@@ -5,7 +5,7 @@ import { Event } from '@/schema/event-schema'
 
 export default async function Homepage() {
 
-  const res = await asyncFetch.get('/admin/events')
+  const res = await asyncFetch.get('/events')
 
   if (!res.ok) return <></>
 

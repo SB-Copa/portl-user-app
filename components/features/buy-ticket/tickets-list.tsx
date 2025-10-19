@@ -10,7 +10,7 @@ type TicketsListProps = {
 
 export default async function TicketsList({ eventId, venueId }: TicketsListProps) {
 
-    const res = await asyncFetch.get(`/admin/events/${eventId}/tickets`)
+    const res = await asyncFetch.get(`/events/${eventId}/tickets`)
     const event = await res.json() as Event
     const tickets = event.event_ticket_types
 
