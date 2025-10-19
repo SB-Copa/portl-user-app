@@ -29,9 +29,9 @@ export const asyncFetch: AsyncFetch = methods.reduce((acc, method) => {
     });
 
     // Optional: handle HTTP errors here
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    // }
 
     return response;
   };
