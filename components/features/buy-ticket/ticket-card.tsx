@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/button'
 import useCart from '@/hooks/use-cart'
 import { EventTicket } from '@/schema/ticket-schema'
 import React from 'react'
+import { Event } from '@/schema/event-schema'
 
 type TicketCardProps = {
     ticket: EventTicket
-    eventName: string
-    venueId: string
+    event: Event
 }
 
-export default function TicketCard({ ticket, eventName, venueId }: TicketCardProps) {
+export default function TicketCard({ ticket, event }: TicketCardProps) {
     const { addTicket, decreaseTicketQuantity, getTicketCartItem } = useCart()
 
     const handleRemoveTicket = () => {
@@ -27,9 +27,8 @@ export default function TicketCard({ ticket, eventName, venueId }: TicketCardPro
                 event_id: ticket.event_id,
                 quantity: 1,
                 price: ticket.price,
-                event_name: eventName,
+                event_name: event.name,
                 name: ticket.name,
-                venue_id: Number(venueId),
                 max_capacity: 1,
             })
         }

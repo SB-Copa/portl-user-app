@@ -1,27 +1,35 @@
 import { asyncFetch } from '@/lib/asyncFetch'
-import { Event } from '@/schema/event-schema'
+import { EventSingleVenue } from '@/schema/event-schema'
 import React from 'react'
 import TableCard from './table-card'
+import TestTableCard from './test-table-card'
 
 type TablesListProps = {
-    eventId: string
-    venueId: string
+    eventSlug: string
 }
 
-export default async function TablesList({ eventId, venueId }: TablesListProps) {
-    const res = await asyncFetch.get(`/events/${eventId}/venues/${venueId}/tables`)
-    const event = await res.json() as Event
-    const venue = event.venues[0]
-    const venueTableNames = venue.venue_table_names
+export default async function TablesList({ eventSlug }: TablesListProps) {
+    const res = await asyncFetch.get(`/paradimes/events/${eventSlug}/tables`, {
+        next: { revalidate: 60 }
+    })
+
+    if(!res.ok) return <></>
+    
+    const event = await res.json() as EventSingleVenue
+
+    if (!event) return
+
+    const venueTableNames = event.venues.venue_table_names
+
 
     return (
         <div className="flex flex-col w-full h-full flex-1 gap-3">
 
             {
-                <div className="flex flex-col gap-2">
+                <div className="grid grid-cols-2 gap-[3rem_0px]">
                     {
                         venueTableNames.map((venueTableName) => (
-                            <TableCard key={venueTableName.id} event={event} venueTableName={venueTableName} />
+                            <TestTableCard key={venueTableName.id} event={event} venueTableName={venueTableName} />
                         ))
                     }
                 </div>

@@ -33,7 +33,6 @@ export const cartTicketSchema = z.object({
     event_ticket_type_id: z.number(),
     event_id: z.number(),
     name: z.string(),
-    venue_id: z.number(),
     quantity: z.number(),
     event_name: z.string(),
     price: z.string(),

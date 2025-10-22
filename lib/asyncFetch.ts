@@ -47,7 +47,7 @@ export const asyncFetch: AsyncFetch = methods.reduce((acc, method) => {
             method: method.toUpperCase(),
             headers,
             credentials: 'include',
-            cache: isServer ? 'no-store' : init?.cache,
+            cache: isServer ? 'default' : init?.cache,
         });
 
         return response;

@@ -100,7 +100,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const addTicket = useCallback((
         ticket: CartTicket
     ) => {
-
         const { quantity, event_name } = ticket;
         if (quantity <= 0) return;
 
