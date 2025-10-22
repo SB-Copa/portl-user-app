@@ -14,9 +14,11 @@ export default async function TenantHomepage() {
 
   const res = await asyncFetch.get('/paradimes/events')
 
+  if (!res.ok) return <></>
+
   const { data: events } = await res.json()
 
-  console.log(events)
+  if (!events) return <></>
 
   return (
     <div className="flex flex-col items-center w-full">

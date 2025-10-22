@@ -34,12 +34,12 @@ export default function EventCard({ event, className, children }: EventCardProps
 
 
                 <div className="flex flex-col gap-2 text-white/90 group-hover:text-white transition-all duration-400">
-                    <h2 className=' text-xl font-bold'>{event.name}</h2>
-                    <p className=' text-base'>{event.description}</p>
+                    <h2 className=' text-2xl font-medium'>{event.name}</h2>
+                    <p className='text-white/70'>{event.description}</p>
 
 
 
-                    <h2 className=' font-bold mt-auto'>
+                    <h2 className=' font-medium mt-auto'>
                         {new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}
                     </h2>
                 </div>
