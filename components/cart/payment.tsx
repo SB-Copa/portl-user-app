@@ -21,7 +21,6 @@ export default function Payment() {
                 event_id: event.event_id,
                 event_tickets: event.event_tickets.map(ticket => ({
                     event_ticket_type_id: ticket.event_ticket_type_id,
-                    venue_id: ticket.venue_id,
                     quantity: ticket.quantity,
                     is_primary: ticket.is_primary ?? false,
                     guests: ticket.guests ?? []

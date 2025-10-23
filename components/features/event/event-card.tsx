@@ -18,7 +18,7 @@ export default function EventCard({ event, className, children }: EventCardProps
         <div className={twMerge("flex flex-col gap-4 group", className)}>
             <Link href={`/events/${event.slug}`} className={twMerge("flex flex-col gap-4 group", className)}>
 
-                <div className="w-full relative h-[35vh] border border-white/20 rounded-md overflow-clip ">
+                <div className="w-full relative h-[35vh] border border-white/20 rounded overflow-clip ">
                     <div className="flex rounded overflow-clip  absolute inset-0 z-10 grayscale-75 group-hover:scale-[101%] group-hover:grayscale-0 transition-all duration-400">
                         <Image src={eventImages[0]} alt={event.name} width={400} height={300} className='object-cover w-full h-full -z-1' />
                     </div>

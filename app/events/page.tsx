@@ -6,6 +6,8 @@ import { ArrowRight, List, Ticket } from 'lucide-react'
 import React from 'react'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Events() {
   const res = await asyncFetch.get('/paradimes/events')
   if (!res.ok) return <></>

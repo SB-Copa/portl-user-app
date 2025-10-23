@@ -34,6 +34,6 @@ export const eventSingleVenueSchema = eventSchema.extend({
   venues: venueSchema,
 });
 
-export type Event = z.infer<typeof eventSchema> | z.infer<typeof eventSchemafp>;
+export type Event = z.infer<typeof eventSchema> | z.infer<typeof eventSchema>;
 export type EventSingleVenue = z.infer<typeof eventSingleVenueSchema>;
 export type EventType = z.infer<typeof eventTypeSchema>;

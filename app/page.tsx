@@ -1,14 +1,14 @@
 import React from 'react'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Event } from '@/schema/event-schema'
-import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { eventImages } from '@/dummy/images'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import EventCard from '@/components/features/event/event-card'
+
+export const dynamic = 'force-dynamic'
 
 export default async function TenantHomepage() {
 

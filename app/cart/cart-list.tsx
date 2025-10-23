@@ -6,7 +6,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import useCart from '@/hooks/use-cart'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { CartTicket, CartVenueTable } from '@/schema/cart-schema'
-import { Event } from '@/schema/event-schema'
+import { Event, EventSingleVenue } from '@/schema/event-schema'
+import { VenueTableName } from '@/schema/venue-schema'
 import { Trash } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -154,7 +155,7 @@ function CartTableItem({ eventId, venueId }: { eventId: number, venueId: number 
 
     const { removeTable, cart } = useCart()
 
-    const [event, setEvent] = useState<Event | null>(null)
+    const [event, setEvent] = useState<EventSingleVenue | null>(null)
 
     const tables = cart.tables.map(table => table.venue_table_name_id);
 
@@ -173,15 +174,14 @@ function CartTableItem({ eventId, venueId }: { eventId: number, venueId: number 
 
     if (!event) return <></> // TODO: add loading state
 
-    const venue = event.venues[0]
-    const venueTableNames = venue.venue_table_names
+    const venueTableNames = event.venues.venue_table_names
 
-    const filteredTableNames = venueTableNames.filter((tableName) => tables.includes(tableName.id))
+    const filteredTableNames = venueTableNames.filter((tableName: VenueTableName) => tables.includes(tableName.id))
 
     return (
         <>
             {
-                filteredTableNames.map((tableName) => (
+                filteredTableNames.map((tableName: VenueTableName) => (
                     <TableCard key={tableName.id} event={event} venueTableName={tableName} showDetails/>
                 ))
             }

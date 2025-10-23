@@ -86,8 +86,8 @@ const generalSans = localFont({
 
 
 export const metadata: Metadata = {
-  title: "PORTL",
-  description: "PORTL",
+  title: "Parallel Dimensions",
+  description: "Parallel Dimensions",
 };
 
 export default function RootLayout({
