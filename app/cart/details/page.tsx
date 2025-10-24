@@ -1,17 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
-import { Label } from '../ui/label'
+import React from 'react'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
+import { Label } from '@/components/ui/label'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { CircleQuestionMark, Plus, Trash, User, Users } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import useCart from '@/hooks/use-cart'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { CartTicket, CartVenueTable } from '@/schema/cart-schema'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
-import { Checkbox } from '../ui/checkbox'
-import { Button } from '../ui/button'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 type CartItem =
     | (CartTicket & {
@@ -22,8 +24,8 @@ type CartItem =
     })
 
 export default function UserDetails() {
+    const router = useRouter()
     const { register, setValue, getValues, watch, formState: { errors } } = useFormContext()
-
     const { ticketsByEvent, tablesByEvent } = useCart()
     const watchedTickets = watch('tickets')
     const watchedTables = watch('tables')
@@ -89,6 +91,11 @@ export default function UserDetails() {
                 setValue(`tables.${tableIndex}.is_primary`, true, { shouldDirty: false })
             }
         }
+    }
+
+    if (tickets?.length <= 0 && tables?.length <= 0) {
+        toast.warning('You must have at least one ticket or table in your cart')
+        router.push('/cart/confirmation?error=no_items')
     }
 
     return (
@@ -287,7 +294,6 @@ type CartItemGuestsProps = {
 
 const CartItemGuests = ({ item }: CartItemGuestsProps) => {
     const { control, getValues } = useFormContext()
-    const [usePrimaryDetails, setUsePrimaryDetails] = useState(false)
 
     const tickets: CartTicket[] = getValues('tickets')
     const tables: CartVenueTable[] = getValues('tables')
@@ -306,6 +312,7 @@ const CartItemGuests = ({ item }: CartItemGuestsProps) => {
         name: fieldName
     })
 
+
     const getCurrentItem = () => {
         const currentValues = getValues()
         return item.type === 'ticket'
@@ -322,12 +329,10 @@ const CartItemGuests = ({ item }: CartItemGuestsProps) => {
             : currentItem.max_capacity      // Full capacity if not primary
     }
 
-    const isAtCapacity = () => {
-        return fields.length >= getMaxGuests()
-    }
+    const isAtCapacity = fields.length >= getMaxGuests()
 
     const handleAddGuest = () => {
-        if (isAtCapacity()) {
+        if (isAtCapacity) {
             console.log(`Cannot add more guests. Max capacity: ${getMaxGuests()}`)
             return
         }
@@ -343,7 +348,7 @@ const CartItemGuests = ({ item }: CartItemGuestsProps) => {
             <AccordionItem value="item-1">
                 <AccordionTrigger className='font-bold'>
                     <div className="flex items-center gap-4">
-                        <Checkbox onClick={(e) => e.stopPropagation()} className='cursor-pointer' />
+                        <Checkbox onClick={(e) => e.stopPropagation()} checked={isAtCapacity} className='cursor-pointer' />
                         {
                             item.type === 'ticket' ? (
                                 <p>
@@ -359,58 +364,41 @@ const CartItemGuests = ({ item }: CartItemGuestsProps) => {
                 </AccordionTrigger>
                 <AccordionContent className='p-4 pt-2 pl-8'>
                     <div className="flex flex-col gap-5">
-                        {/* <div className="flex gap-4">
-                            <Checkbox checked={usePrimaryDetails} onCheckedChange={() => setUsePrimaryDetails(!usePrimaryDetails)} />
-                            <div className="flex gap-2">
-                                <p>Use the primary guest&apos;s details to ALL tickets.</p>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <CircleQuestionMark size={14} />
-                                    </TooltipTrigger>
-                                    <TooltipContent side='bottom' align='center'>
-                                        <p className='text-xs'>This is a tool tip</p>
-                                    </TooltipContent>
-                                </Tooltip>
+                        <>
+                            {fields.map((field, index) => (
+                                <GuestForm
+                                    key={field.id}
+                                    fieldName={`${fieldName}.${index}`}
+                                    onRemove={() => remove(index)}
+                                    index={index}
+                                />
+                            ))}
+
+                            <div className="flex w-full justify-between items-end gap-3">
+                                <Button
+                                    type='button'
+                                    onClick={handleAddGuest}
+                                    variant={'outline'}
+                                    className='w-fit'
+                                    disabled={isAtCapacity}
+                                >
+
+                                    {
+                                        !isAtCapacity ?
+                                            <>
+                                                Add Guest <Plus />
+                                            </>
+                                            :
+                                            <p>Full Capacity</p>
+                                    }
+
+                                </Button>
+
+                                <p className="text-xs text-white/70">
+                                    Guests: {fields.length}/{getMaxGuests()}
+                                </p>
                             </div>
-                        </div> */}
-
-                        {!usePrimaryDetails && (
-                            <>
-                                {fields.map((field, index) => (
-                                    <GuestForm
-                                        key={field.id}
-                                        fieldName={`${fieldName}.${index}`}
-                                        onRemove={() => remove(index)}
-                                        index={index}
-                                    />
-                                ))}
-
-                                <div className="flex w-full justify-between items-end gap-3">
-                                    <Button
-                                        type='button'
-                                        onClick={handleAddGuest}
-                                        variant={'outline'}
-                                        className='w-fit'
-                                        disabled={isAtCapacity()}
-                                    >
-
-                                        {
-                                            !isAtCapacity() ?
-                                                <>
-                                                    Add Guest <Plus />
-                                                </>
-                                                :
-                                                <p>Full Capacity</p>
-                                        }
-
-                                    </Button>
-
-                                    <p className="text-xs text-white/70">
-                                        Guests: {fields.length}/{getMaxGuests()}
-                                    </p>
-                                </div>
-                            </>
-                        )}
+                        </>
                     </div>
                 </AccordionContent>
             </AccordionItem>

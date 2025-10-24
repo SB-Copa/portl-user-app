@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import { CartProvider } from "@/contexts/cart-context";
 import CartGlobalFooter from "@/components/cart/cart-global-footer";
-import Image from "next/image";
 import TenantTopNavigation from "@/components/tenant/top-navigation";
 import Footer from "@/components/layout/footer";
+import Providers from "./providers";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
   description: "Parallel Dimensions",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -98,18 +98,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${generalSans.variable} ${generalSans.className} font-general-sans antialiased bg-black text-white`}>
-        <CartProvider>
+        <Providers>
           <div className="flex flex-col relative mx-auto min-h-[100lvh] w-full">
-            {/* <Image src="/images/portl-logo-white.svg" alt="logo" width={100} height={100} className="h-10 w-fit self-start" /> */}
-
             <TenantTopNavigation />
-            <div className="flex flex-col pb-22">
+            <div className="flex flex-col">
               {children}
             </div>
             <Footer />
             <CartGlobalFooter />
+            <Toaster />
           </div>
-        </CartProvider>
+        </Providers>
+
       </body>
     </html>
   );

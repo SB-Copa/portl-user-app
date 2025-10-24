@@ -2,26 +2,28 @@
 
 import { Toggle } from '@/components/ui/toggle'
 import useCart from '@/hooks/use-cart'
+import { useDevice } from '@/hooks/use-device'
 import { EventSingleVenue } from '@/schema/event-schema'
 import { VenueTable, VenueTableName, VenueTableRequirement } from '@/schema/venue-schema'
 import { Martini } from 'lucide-react'
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type TestTableCardProps = {
     event: EventSingleVenue
     venueTableName: VenueTableName
-    showDetails?: boolean
 }
 
-export default function TestTableCard({ event, venueTableName, showDetails }: TestTableCardProps) {
+export default function TestTableCard({ event, venueTableName }: TestTableCardProps) {
+    const { isMobile } = useDevice()
     return (
-        <div className="flex flex-col w-full border-l border-white/20 p-6  gap-10 hover:bg-white/5">
+        <div className={twMerge("flex flex-col w-full border-l border-white/20 p-6  gap-10 hover:bg-white/5", isMobile && 'border')}>
 
             <div className="flex flex-col gap-2">
 
                 <div className="flex gap-2 items-center">
                     <Martini />
-                    <h2 className='text-3xl font-medium'>{venueTableName.name}</h2>
+                    <h2 className='text-2xl lg:text-3xl font-medium'>{venueTableName.name}</h2>
                 </div>
 
                 {

@@ -2,7 +2,7 @@ import EventCard from '@/components/features/event/event-card'
 import { Button } from '@/components/ui/button'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Event } from '@/schema/event-schema'
-import { ArrowRight, List, Ticket } from 'lucide-react'
+import {  List, Ticket } from 'lucide-react'
 import React from 'react'
 import Link from 'next/link'
 

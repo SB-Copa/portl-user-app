@@ -21,14 +21,14 @@ export default async function TenantHomepage() {
   if (!events) return <></>
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full pb-10">
 
       <div className="w-full h-[60vh] bg-white/10">
         <Image src={eventImages[2]} alt="Banner" width={400} height={300} className='object-cover w-full h-full' />
 
       </div>
 
-      <div className="flex flex-col p-10 px-32 w-full gap-10">
+      <div className="flex flex-col p-4 lg:p-10 lg:px-32  w-full gap-10">
         <div className="flex flex-col lg:flex-row h-full gap-10">
 
           <div className="flex flex-col lg:w-[50%] lg:sticky lg:top-24 self-start lg:text-right gap-5">

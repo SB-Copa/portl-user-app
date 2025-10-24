@@ -1,5 +1,4 @@
 import React from 'react'
-import PageHeader from '../layout/page-header'
 import { Button } from '../ui/button'
 import useCart from '@/hooks/use-cart'
 import { useFormContext } from 'react-hook-form'
@@ -13,8 +12,6 @@ export default function Payment() {
     const handleCheckout = async () => {
         const values = getValues()
         const { tickets, tables, ...formValues } = values;
-
-        console.log(allTicketsPerEvent)
 
         const modifiedAllTicketsPerEvent = allTicketsPerEvent.map(event => {
             return {
@@ -48,15 +45,10 @@ export default function Payment() {
             })
         })
 
-
-        console.log(cart, values)
     }
-
 
     return (
         <div className="flex flex-col gap-10">
-            <PageHeader title={'Payment'} showBackButton />
-
             <div className="flex flex-col gap-4">
 
                 <Button type='button' onClick={handleCheckout}>

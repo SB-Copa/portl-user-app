@@ -1,10 +1,14 @@
-import React from 'react'
-import CartForm from '@/components/cart/cart-form'
+'use client'
 
-export default function Cart() {
-    return (
-        <div className="flex flex-col items-center w-full gap-10 py-4 min-h-screen">
-            <CartForm />
-        </div>
-    )
+import { usePathname, useRouter } from 'next/navigation'
+import  { useEffect } from 'react'
+
+export default function CartMainPage() {
+    const pathname = usePathname()
+    const router = useRouter()
+
+    useEffect(() => {
+        router.push('/cart/confirmation')
+    }, [pathname])
+
 }

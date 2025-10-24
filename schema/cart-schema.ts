@@ -1,6 +1,7 @@
 import z from "zod";
 import { eventTicketTypeSchema } from "./ticket-schema";
 import { venueTableNameSchema } from "./venue-schema";
+import { isAtLeast18 } from "../lib/utils";
 
 export const cartItemSchema = z.object({
     tickets: z.array(eventTicketTypeSchema),
@@ -55,7 +56,11 @@ export const stepTwoSchema = z.object({
     first_name: z.string().min(1),
     last_name: z.string().min(1),
     email: z.email(),
-    birthdate: z.string(),
+    birthdate: z.string().refine((date) => {
+        return isAtLeast18(date);
+    }, {
+        message: "You must be at least 18 years old to proceed",
+    }),
     // invited_by: z.string().min(1).optional(),
 })
 

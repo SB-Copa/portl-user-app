@@ -17,10 +17,8 @@ export default async function EventLandingPage({ params }: EventVenuesProps) {
     const res = await asyncFetch.get(`/events/${eventSlug}`)
     const event = await res.json()
 
-    console.log(event)
-
     return (
-        <div className="flex flex-col items-center w-full gap-10">
+        <div className="flex flex-col items-center w-full gap-10 pb-10">
             <div className="w-full min-h-[60vh] h-[60vh] bg-white/10 flex flex-col items-center justify-center relative">
                 <Image src={eventImages[0]} alt={event.name} width={400} height={300} className='object-cover w-full h-full' />
 

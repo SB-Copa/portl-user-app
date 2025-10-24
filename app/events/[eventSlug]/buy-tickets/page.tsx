@@ -1,12 +1,9 @@
-import PageHeader from '@/components/layout/page-header'
 import React, { Suspense } from 'react'
 import { asyncFetch } from '@/lib/asyncFetch'
-import { Event } from '@/schema/event-schema'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TicketsList from '@/components/features/buy-ticket/tickets-list'
 import TablesList from '@/components/features/buy-ticket/tables-list'
 import Link from 'next/link'
-import { Venue } from '@/schema/venue-schema'
 import { Button } from '@/components/ui/button'
 
 type BuyTicketsProps = {

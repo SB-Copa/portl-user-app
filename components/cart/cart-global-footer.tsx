@@ -6,8 +6,11 @@ import React from 'react'
 import { CartOverview, CartOverviewActions } from './cart-overview'
 import Link from 'next/link'
 import { Button } from '../ui/button'
+import { useDevice } from '@/hooks/use-device'
 
 export default function CartGlobalFooter() {
+
+    const { isMobile } = useDevice()
     const { totalItemCount } = useCart()
 
     const pathname = usePathname()
@@ -15,10 +18,12 @@ export default function CartGlobalFooter() {
 
     if (totalItemCount === 0 || isCartPage) return null
 
+    if (!isMobile) return null
+
     return (
         <CartOverview>
             <CartOverviewActions>
-                <Link href="/cart">
+                <Link href="/cart/confirmation">
                     <Button>
                         View Cart
                     </Button>
