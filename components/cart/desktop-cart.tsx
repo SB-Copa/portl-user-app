@@ -17,8 +17,6 @@ export default function DesktopCart() {
   const ticketTotal = cart.tickets.reduce((total, ticket) => total + parseFloat(ticket.price) * ticket.quantity, 0)
   const tableTotal = cart.tables.reduce((total, table) => total + parseFloat(table.price), 0)
 
-  console.log(tickets, tables)
-
   return (
     <Popover>
       <PopoverTrigger asChild>

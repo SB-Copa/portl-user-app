@@ -92,7 +92,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }, [isInitialized, cart]);
 
     useEffect(() => {
-        console.log('Cart updated:', cart);
+        // console.log('Cart updated:', cart);
     }, [cart]);
 
     // ==================== TICKET OPERATIONS ====================
