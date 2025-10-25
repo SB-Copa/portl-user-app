@@ -44,7 +44,7 @@ export default async function TenantHomepage() {
           </div>
 
           <div className="flex flex-col gap-12 max-w-full overflow-auto items-start lg:w-[50%]">
-            {[...events, ...events, ...events]?.map((event: Event, index: number) => (
+            {events?.map((event: Event, index: number) => (
               <EventCard key={index} event={event} />
             ))}
           </div>
