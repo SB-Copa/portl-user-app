@@ -37,15 +37,17 @@ export default function TestTicketCard({ ticket, event }: TestTicketCardProps) {
     const handleChangeTicketQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         const quantity = Number(e.target.value)
 
-        if (quantity > ticket.available_tickets) return
-
-        if (quantity < 1) {
+        if (quantity <= 0) {
             updateTicketQuantity(ticket.id, 0)
             return
         }
 
-        updateTicketQuantity(ticket.id, quantity)
+        if(quantity < ticket.available_tickets) {
+            updateTicketQuantity(ticket.id, quantity)
+            return
+        }
     }
+
 
 
     const cartTicket = getTicketCartItem(ticket.id)
@@ -66,12 +68,12 @@ export default function TestTicketCard({ ticket, event }: TestTicketCardProps) {
 
 
             <hr  className="lg:hidden border-white/20"/>
-            <div className="flex flex-col gap-3 mt-auto items-center">
+            <div className="flex flex-col gap-3 mt-auto items-center w-fit">
                 <div className="flex gap-3 items-center">
                     <Button variant='ghost' className="size-10" size={'icon'} onClick={() => decreaseTicketQuantity(ticket.id)}>
                         <Minus className="size-4" />
                     </Button>
-                    <Input className="w-14 text-center" value={ticketQuantity} onChange={handleChangeTicketQuantity} />
+                    <Input className="w-18 text-center" value={ticketQuantity} onChange={handleChangeTicketQuantity} />
                     <Button variant='ghost' className="size-10" size={'icon'} onClick={handleAddTicket}>
                         <Plus className="size-4" />
                     </Button>

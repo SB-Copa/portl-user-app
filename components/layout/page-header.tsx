@@ -1,39 +1,113 @@
 'use client'
 
-import React from 'react'
+import * as React from 'react'
 import { Button } from '../ui/button'
 import { ArrowLeftIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { Slot } from '@radix-ui/react-slot'
 
-type PageHeaderProps = {
-    title: string
-    description?: string
-    showBackButton?: boolean
-    backButtonLink?: string
-    backButtonOnClick?: () => void
+function PageHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="page-header"
+      className={cn("flex flex-col w-full", className)}
+      {...props}
+    />
+  )
 }
-export default function PageHeader({ title, description, showBackButton = false, backButtonLink, backButtonOnClick }: PageHeaderProps) {
-    const router = useRouter()
-    return (
-        <div className='flex flex-col w-full'>
 
+function PageHeaderContent({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="page-header-content"
+      className={cn("flex flex-col gap-2 items-start", className)}
+      {...props}
+    />
+  )
+}
 
-            <div className="flex gap-10">
-                {showBackButton && (
-                    <Button variant="ghost" size="icon" onClick={() => backButtonOnClick ? backButtonOnClick() : backButtonLink ? router.push(backButtonLink) : router.back()}>
-                        <ArrowLeftIcon className="w-4 h-4" />
-                    </Button>
-                )}
+function PageHeaderBackButton({ 
+  className, 
+  href, 
+  onClick,
+  children,
+  ...props 
+}: React.ComponentProps<'button'> & {
+  href?: string
+  onClick?: () => void
+  children?: React.ReactNode
+}) {
+  const router = useRouter()
 
-                <div className="flex flex-col">
-                    <h1 className='text-2xl font-bold'>{title}</h1>
-                    {
-                        description && (
-                            <p className='text-sm text-gray-500'>{description}</p>
-                        )
-                    }
-                </div>
-            </div>
-        </div>
-    )
+  const handleClick = () => {
+    if (onClick) {
+      onClick()
+    } else if (href) {
+      router.push(href)
+    } else {
+      router.back()
+    }
+  }
+
+  return (
+    <Button 
+      variant="ghost" 
+      onClick={handleClick}
+      className={cn("w-fit", className)}
+      {...props}
+    >
+      <ArrowLeftIcon size={10} />   
+      {children}
+    </Button>
+  )
+}
+
+function PageHeaderTitle({ 
+  className, 
+  asChild = false, 
+  ...props 
+}: React.ComponentProps<'h1'> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "h1"
+  
+  // When using asChild, don't apply base classes that might conflict
+  // Let the child element handle all styling
+  const baseClasses = asChild ? "" : "text-2xl lg:text-4xl font-medium uppercase"
+  
+  return (
+    <Comp
+      data-slot="page-header-title"
+      className={cn(baseClasses, className)}
+      {...props}
+    />
+  )
+}
+
+function PageHeaderDescription({ className, ...props }: React.ComponentProps<'p'>) {
+  return (
+    <p
+      data-slot="page-header-description"
+      className={cn("text-sm text-gray-500", className)}
+      {...props}
+    />
+  )
+}
+
+function PageHeaderText({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="page-header-text"
+      className={cn("flex flex-col", className)}
+      {...props}
+    />
+  )
+}
+
+export {
+  PageHeader,
+  PageHeaderContent,
+  PageHeaderBackButton,
+  PageHeaderTitle,
+  PageHeaderDescription,
+  PageHeaderText,
 }

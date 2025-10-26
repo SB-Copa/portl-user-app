@@ -7,6 +7,7 @@ import TenantTopNavigation from "@/components/tenant/top-navigation";
 import Footer from "@/components/layout/footer";
 import Providers from "./providers";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -105,7 +106,9 @@ export default async function RootLayout({
               {children}
             </div>
             <Footer />
-            <CartGlobalFooter />
+            <Suspense>
+              <CartGlobalFooter />
+            </Suspense>
             <Toaster />
           </div>
         </Providers>

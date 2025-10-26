@@ -9,8 +9,8 @@ type TablesListProps = {
 }
 
 export default async function TablesList({ eventSlug }: TablesListProps) {
-    const res = await asyncFetch.get(`/paradimes/events/${eventSlug}/tables`, {
-        next: { revalidate: 60 }
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paradimes/events/${eventSlug}/tables`, {
+        credentials: 'include',
     })
 
     if (!res.ok) return <></>

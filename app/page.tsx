@@ -1,4 +1,3 @@
-import React from 'react'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { Event } from '@/schema/event-schema'
 import Link from 'next/link'
@@ -7,19 +6,9 @@ import { eventImages } from '@/dummy/images'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import EventCard from '@/components/features/event/event-card'
-
-export const dynamic = 'force-dynamic'
+import { Suspense } from 'react'
 
 export default async function TenantHomepage() {
-
-  const res = await asyncFetch.get('/paradimes/events')
-
-  if (!res.ok) return <></>
-
-  const { data: events } = await res.json()
-
-  if (!events) return <></>
-
   return (
     <div className="flex flex-col items-center w-full pb-10">
 
@@ -44,9 +33,10 @@ export default async function TenantHomepage() {
           </div>
 
           <div className="flex flex-col gap-12 max-w-full overflow-auto items-start lg:w-[50%]">
-            {events?.map((event: Event, index: number) => (
-              <EventCard key={index} event={event} />
-            ))}
+
+            <Suspense>
+              <EventsList />
+            </Suspense>
           </div>
 
         </div>
@@ -54,5 +44,23 @@ export default async function TenantHomepage() {
 
 
     </div>
+  )
+}
+
+const EventsList = async () => {
+  "use cache"
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paradimes/events`, {
+    credentials: 'include',
+  })
+
+  const { data: events } = await res.json()
+
+  return (
+    <>
+      {events?.map((event: Event, index: number) => (
+        <EventCard key={index} event={event} />
+      ))}
+    </>
   )
 }

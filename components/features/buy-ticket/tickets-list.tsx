@@ -10,8 +10,8 @@ type TicketsListProps = {
 
 export default async function TicketsList({ eventSlug }: TicketsListProps) {
 
-    const res = await asyncFetch.get(`/paradimes/events/${eventSlug}/tickets`, {
-        next: { revalidate: 60 }
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/paradimes/events/${eventSlug}/tickets`, {
+        credentials: 'include',
     })
 
     if (!res.ok) return <></>

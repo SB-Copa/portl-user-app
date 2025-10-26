@@ -7,10 +7,10 @@ import { BreakpointKey, getCurrentBreakpoint } from '@/lib/breakpoints';
 type DeviceContextType = {
   // Device type
   device: DeviceInfo;
-  
+
   // Current breakpoint
   breakpoint: BreakpointKey | 'xs';
-  
+
   // Convenience properties
   isMobile: boolean;
   isTablet: boolean;
@@ -24,10 +24,12 @@ type DeviceProviderProps = {
   initialDevice?: DeviceInfo;
 };
 
-export const DeviceProvider: React.FC<DeviceProviderProps> = ({ 
-  children, 
+export const DeviceProvider: React.FC<DeviceProviderProps> = ({
+  children,
   initialDevice = { type: 'desktop', isMobile: false, isTablet: false, isDesktop: true }
 }) => {
+
+
   const [device, setDevice] = useState<DeviceInfo>(initialDevice);
   const [breakpoint, setBreakpoint] = useState<BreakpointKey | 'xs'>('xs');
   const [isClient, setIsClient] = useState(false);
@@ -35,13 +37,13 @@ export const DeviceProvider: React.FC<DeviceProviderProps> = ({
   // Initialize client-side detection
   useEffect(() => {
     setIsClient(true);
-    
+
     // Update device info on client side
     if (typeof navigator !== 'undefined') {
       const userAgent = navigator.userAgent;
       const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
       const isTablet = /iPad|Android(?!.*Mobile)/i.test(userAgent);
-      
+
       setDevice({
         type: isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop',
         isMobile,
@@ -49,7 +51,7 @@ export const DeviceProvider: React.FC<DeviceProviderProps> = ({
         isDesktop: !isMobile && !isTablet,
       });
     }
-    
+
     // Set initial breakpoint
     setBreakpoint(getCurrentBreakpoint());
   }, []);
@@ -63,7 +65,7 @@ export const DeviceProvider: React.FC<DeviceProviderProps> = ({
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
