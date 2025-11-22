@@ -3,9 +3,10 @@
 import React from 'react'
 import { CartOverview, CartOverviewActions } from './cart-overview'
 import { Button } from '../ui/button'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { useCheckout } from '@/hooks/use-checkout'
 
 
 export default function MobileCart() {
@@ -18,7 +19,7 @@ export default function MobileCart() {
 
                 {pathname === '/cart/confirmation' && <ConfirmationButtons />}
                 {pathname === '/cart/details' && <UserDetailsButtons />}
-                {/* { pathname === '/cart/confirmation' && <ConfirmationButtons /> } */}
+                {pathname === '/cart/payment' && <PaymentButtons />}
 
 
             </CartOverviewActions>
@@ -29,10 +30,10 @@ export default function MobileCart() {
 const ConfirmationButtons = () => {
     return (
         <div className="flex">
-            <Button variant="default" asChild>
-                <Link href="/cart/details">
+            <Button variant="default" size="sm" asChild>
+                <Link href="/cart/details" className="flex items-center gap-1.5">
                     <span>Next</span>
-                    <ArrowRight />
+                    <ArrowRight className="size-3.5" />
                 </Link>
             </Button>
         </div>
@@ -40,20 +41,40 @@ const ConfirmationButtons = () => {
 }
 
 const UserDetailsButtons = () => {
-
     return (
         <div className="flex gap-2">
-            <Button variant="outline" asChild>
-                <Link href="/cart/confirmation">
+            <Button variant="outline" size="sm" asChild>
+                <Link href="/cart/confirmation" className="flex items-center gap-1.5">
+                    <ArrowLeft className="size-3.5" />
                     <span>Back</span>
                 </Link>
             </Button>
 
-            <Button variant="default" asChild>
-                <Link href="/cart/details">
+            <Button variant="default" size="sm" asChild>
+                <Link href="/cart/payment" className="flex items-center gap-1.5">
                     <span>Next</span>
-                    <ArrowRight />
+                    <ArrowRight className="size-3.5" />
                 </Link>
+            </Button>
+        </div>
+    )
+}
+
+const PaymentButtons = () => {
+    const { handleCheckout } = useCheckout()
+
+    return (
+        <div className="flex gap-2">
+            <Button variant="outline" size="sm" asChild>
+                <Link href="/cart/details" className="flex items-center gap-1.5">
+                    <ArrowLeft className="size-3.5" />
+                    <span>Back</span>
+                </Link>
+            </Button>
+
+            <Button variant="default" size="sm" onClick={handleCheckout} className="flex items-center gap-1.5">
+                <span>Checkout</span>
+                <ArrowRight className="size-3.5" />
             </Button>
         </div>
     )

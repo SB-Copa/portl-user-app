@@ -15,7 +15,7 @@ type EventCardProps = {
 export default function EventCard({ event, className, children }: EventCardProps) {
 
     return (
-        <div className={twMerge("flex flex-col gap-4 group", className)}>
+        <div className={twMerge("flex flex-col gap-4 group w-full", className)}>
             <Link href={`/events/${event.slug}`} className={twMerge("flex flex-col gap-4 group", className)}>
 
                 <div className="w-full relative h-[35vh] border border-white/20 rounded overflow-clip ">

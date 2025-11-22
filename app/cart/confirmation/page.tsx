@@ -4,13 +4,45 @@ import CartTableItem from '@/components/cart/cart-table-item'
 import CartTicketItem from '@/components/cart/cart-ticket-item'
 import useCart from '@/hooks/use-cart'
 import { Martini, Ticket } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDevice } from '@/hooks/use-device'
-
+import { useCartFormContext } from '@/contexts/form-cart-context'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export default function ConfirmationPage() {
-    const { ticketsByEvent, tablesByEvent } = useCart()
+    const { ticketsByEvent, tablesByEvent, clearCart } = useCart()
     const { isMobile } = useDevice()
+    const form = useCartFormContext()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    // Reset cart and form only if coming from success page (starting a new purchase)
+    useEffect(() => {
+        const fromSuccess = searchParams.get('from_success') === 'true'
+        
+        if (fromSuccess) {
+            // User is starting a new purchase after completing one
+            // Clear cart and form to start fresh
+            clearCart()
+            form.reset({
+                tickets: [],
+                tables: [],
+                payment: {
+                    method: 'qrph',
+                    qrph: {
+                        name: '',
+                        email: '',
+                        phone: '',
+                    }
+                }
+            })
+            
+            // Clean up the URL parameter
+            const url = new URL(window.location.href)
+            url.searchParams.delete('from_success')
+            window.history.replaceState({}, '', url.pathname + url.search)
+        }
+    }, [searchParams, clearCart, form])
 
     return (
         <>
@@ -18,8 +50,8 @@ export default function ConfirmationPage() {
                 Object.keys(ticketsByEvent).length > 0 && (
                     <div className='flex flex-col gap-5'>
                         <div className="flex gap-2 items-center">
-                            <Ticket />
-                            <h2>Tickets</h2>
+                            <Ticket className="size-4 sm:size-5" />
+                            <h2 className="text-lg sm:text-xl font-semibold">Tickets</h2>
                         </div>
                         {
                             Object.entries(ticketsByEvent).map(([eventName, items]) => (
@@ -45,8 +77,8 @@ export default function ConfirmationPage() {
                 Object.keys(tablesByEvent).length > 0 && (
                     <div className='flex flex-col gap-5'>
                         <div className="flex gap-2 items-center">
-                            <Martini />
-                            <h2>Tables</h2>
+                            <Martini className="size-4 sm:size-5" />
+                            <h2 className="text-lg sm:text-xl font-semibold">Tables</h2>
                         </div>
 
                         {

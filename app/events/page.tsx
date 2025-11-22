@@ -34,6 +34,8 @@ const EventsList = async () => {
 
   const { data: events } = await res.json()
 
+  console.log(events)
+
   return (
     <>
       {events?.map((event: Event, index: number) => (

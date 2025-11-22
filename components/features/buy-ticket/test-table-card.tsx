@@ -26,15 +26,10 @@ export default function TestTableCard({ event, venueTableName }: TestTableCardPr
                     <h2 className='text-2xl lg:text-3xl font-medium'>{venueTableName.name}</h2>
                 </div>
 
-                {
-                    venueTableName.venue_table_requirements.map((requirement) => (
-
-                        <div key={requirement.id} className="flex flex-col">
-                            <p className="mb-5 text-white/70">{requirement.name}</p>
-                            <p><span className='font-bold'>PHP</span> {Number(requirement.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        </div>
-                    ))
-                }
+                <div key={venueTableName.venue_table_requirements.id} className="flex flex-col">
+                    <p className="mb-5 text-white/70">{venueTableName.venue_table_requirements.name}</p>
+                    <p><span className='font-bold'>PHP</span> {Number(venueTableName.venue_table_requirements.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                </div>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -42,7 +37,7 @@ export default function TestTableCard({ event, venueTableName }: TestTableCardPr
                 <div className="grid grid-cols-5 gap-2">
                     {
                         venueTableName.venue_tables.map((table) => (
-                            <TableCardToggle key={table.id} event={event} venueTable={table} venueTableName={venueTableName} tableRequirements={venueTableName.venue_table_requirements[0]} />
+                            <TableCardToggle key={table.id} event={event} venueTable={table} venueTableName={venueTableName} tableRequirements={venueTableName.venue_table_requirements} />
                         ))
                     }
                 </div>

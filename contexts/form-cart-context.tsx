@@ -20,12 +20,21 @@ export function CartFormProvider({ children }: { children: React.ReactNode }) {
     resolver: zodResolver(fullFormSchema),
     defaultValues: {
       tickets: cart.tickets,
-      tables: cart.tables
+      tables: cart.tables,
+      payment: {
+        method: 'qrph',
+        qrph: {
+          name: '',
+          email: '',
+          phone: '',
+        }
+      }
     }
   })
 
   useEffect(() => {
     form.reset({
+      ...form.getValues(),
       tickets: cart.tickets,
       tables: cart.tables
     })

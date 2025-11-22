@@ -64,7 +64,18 @@ export const stepTwoSchema = z.object({
     // invited_by: z.string().min(1).optional(),
 })
 
-export const fullFormSchema = z.intersection(stepOneSchema, stepTwoSchema)
+export const stepThreeSchema = z.object({
+    payment: z.object({
+        method: z.enum(['qrph']),
+        qrph: z.object({
+            name: z.string().min(1, 'QRPH name is required'),
+            email: z.union([z.string().email(), z.literal('')]).optional(),
+            phone: z.string().min(1, 'QRPH phone number is required'),
+        })
+    })
+})
+
+export const fullFormSchema = stepOneSchema.and(stepTwoSchema).and(stepThreeSchema)
 
 export type CartTicket = z.infer<typeof cartTicketSchema>
 export type CartVenueTable = z.infer<typeof cartVenueTableSchema>

@@ -105,14 +105,14 @@ export default function UserDetails() {
                 <div className="flex flex-col gap-2">
 
                     <div className="flex gap-2 items-center">
-                        <User />
-                        <h2>Primary guest</h2>
+                        <User className="size-4 sm:size-5" />
+                        <h2 className="text-lg sm:text-xl font-semibold">Primary guest</h2>
                     </div>
-                    <p className='text-sm text-white/80'>All tickets will be automatically filled with the primary guest’s details. Please make sure the information you provide in the form is correct.</p>
+                    <p className='text-xs sm:text-sm text-white/80'>All tickets will be automatically filled with the primary guest's details. Please make sure the information you provide in the form is correct.</p>
                 </div>
 
-
-                <InputGroup>
+                {/* //! DEPRECATED  */}
+                {/* <InputGroup>
                     <Select onValueChange={handleSelectPrimaryTicket}>
                         <SelectTrigger className='w-full border-none cursor-pointer'>
                             <SelectValue placeholder="Choose" />
@@ -210,9 +210,9 @@ export default function UserDetails() {
 
                         </div>
                     </InputGroupAddon>
-                </InputGroup>
+                </InputGroup> */}
 
-                <div className="grid grid-cols-2 w-full gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
 
                     <InputGroup>
                         <InputGroupInput id="first-name" className='text-white ' {...register('first_name')} />
@@ -264,12 +264,11 @@ export default function UserDetails() {
 
                 </div>
 
-
                 <hr className='my-10 mt-16 border-[#2c2d2c]' />
 
                 <div className="flex gap-2 items-center">
-                    <Users />
-                    <h2>Other guest/s</h2>
+                    <Users className="size-4 sm:size-5" />
+                    <h2 className="text-lg sm:text-xl font-semibold">Other guest/s</h2>
                 </div>
 
                 {
@@ -348,7 +347,7 @@ const CartItemGuests = ({ item }: CartItemGuestsProps) => {
             <AccordionItem value="item-1">
                 <AccordionTrigger className='font-bold'>
                     <div className="flex items-center gap-4">
-                        <Checkbox onClick={(e) => e.stopPropagation()} checked={isAtCapacity} className='cursor-pointer' />
+                        <Checkbox onClick={(e) => e.stopPropagation()} className='cursor-pointer' />
                         {
                             item.type === 'ticket' ? (
                                 <p>
@@ -417,8 +416,8 @@ const GuestForm = ({ fieldName, onRemove, index }: GuestFormProps) => {
     const { register } = useFormContext()
 
     return (
-        <div className="flex gap-2">
-            <InputGroup>
+        <div className="flex flex-col sm:flex-row gap-2">
+            <InputGroup className="flex-1">
                 <InputGroupInput
                     className="text-white"
                     {...register(`${fieldName}.full_name`)}
@@ -429,7 +428,7 @@ const GuestForm = ({ fieldName, onRemove, index }: GuestFormProps) => {
                 </InputGroupAddon>
             </InputGroup>
 
-            <InputGroup>
+            <InputGroup className="flex-1 sm:max-w-[120px]">
                 <InputGroupInput
                     type="number"
                     className="text-white"
@@ -442,7 +441,7 @@ const GuestForm = ({ fieldName, onRemove, index }: GuestFormProps) => {
                 </InputGroupAddon>
             </InputGroup>
 
-            <Button onClick={onRemove} variant={'ghost'} size={'icon'}><Trash /></Button>
+            <Button onClick={onRemove} variant={'ghost'} size={'icon'} className="flex-shrink-0 self-start sm:self-auto"><Trash /></Button>
         </div>
     )
 }

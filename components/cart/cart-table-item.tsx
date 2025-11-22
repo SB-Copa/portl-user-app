@@ -15,22 +15,22 @@ export default function CartTableItem({ item }: CartTableItemProps) {
     const { isMobile } = useDevice()
 
     return (
-        <div className={`flex item overflow-clip border-[#2c2d2c] w-full justify-between items-center gap-10 p-4 ${isMobile && 'border'}`}>
+        <div className={`flex overflow-clip border-[#2c2d2c] w-full justify-between items-center ${isMobile ? 'gap-4 p-3 border' : 'gap-10 p-4'}`}>
 
-            <div className="flex gap-5">
+            <div className={`flex ${isMobile ? 'gap-3' : 'gap-5'} flex-1 min-w-0`}>
                 {
                     !isMobile && (
-                        <Martini size={24} className="mt-[2px]" />
+                        <Martini size={24} className="mt-[2px] flex-shrink-0" />
                     )
                 }
 
-                <div className="flex flex-col gap-5">
-                    <div className="flex gap-5 items-center">
+                <div className={`flex flex-col ${isMobile ? 'gap-2' : 'gap-5'} min-w-0 flex-1`}>
+                    <div className={`flex ${isMobile ? 'gap-2' : 'gap-5'} items-center`}>
 
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 min-w-0">
 
-                            <h4 className='text-lg font-medium'>{item.table_name} - {item.legend}</h4>
-                            <p className='text-sm text-white/50'>   
+                            <h4 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium truncate`}>{item.table_name} - {item.legend}</h4>
+                            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-white/50`}>   
                                 PHP {Number(item.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / per table
                             </p>
 

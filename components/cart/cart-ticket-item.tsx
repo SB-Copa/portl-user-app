@@ -11,23 +11,23 @@ export default function CartTicketItem({ item }: { item: CartTicket }) {
     const totalPrice = Number(item.price) * item.quantity
 
     return (
-        <div className={`flex overflow-clip border-[#2c2d2c] w-full justify-between items-center gap-10 p-4 ${isMobile && 'p-0 border'}`}>
+        <div className={`flex overflow-clip border-[#2c2d2c] w-full justify-between items-center ${isMobile ? 'gap-4 p-3 border' : 'gap-10 p-4'}`}>
 
-            <div className="flex gap-5 self-start">
+            <div className={`flex ${isMobile ? 'gap-3' : 'gap-5'} self-start flex-1 min-w-0`}>
 
                 {
                     !isMobile && (
-                        <TicketIcon size={24} className="mt-[2px]" />
+                        <TicketIcon size={24} className="mt-[2px] flex-shrink-0" />
                     )
                 }
 
-                <div className="flex flex-col gap-5">
-                    <div className="flex gap-5 items-center">
+                <div className={`flex flex-col ${isMobile ? 'gap-2' : 'gap-5'} min-w-0 flex-1`}>
+                    <div className={`flex ${isMobile ? 'gap-2' : 'gap-5'} items-center`}>
 
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 min-w-0">
 
-                            <h4 className='text-lg font-medium'> {isMobile && item.quantity}x {item.name}</h4>
-                            <p className='text-sm text-white/50'>
+                            <h4 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium`}> {isMobile && `${item.quantity}x `}{item.name}</h4>
+                            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-white/50`}>
                                 PHP {Number(totalPrice).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / per ticket
                             </p>
 
@@ -48,10 +48,10 @@ export default function CartTicketItem({ item }: { item: CartTicket }) {
                 </div>
             </div>
 
-            <div className="flex flex-col items-end h-full justify-between">
+            <div className={`flex flex-col items-end ${isMobile ? 'justify-center' : 'h-full justify-between'} flex-shrink-0`}>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant='ghost'><Trash /></Button>
+                        <Button variant='ghost' size={isMobile ? 'icon' : 'default'}><Trash className={isMobile ? 'size-4' : ''} /></Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-black/80 backdrop-blur-sm border-[#2c2d2c] text-white">
                         <AlertDialogHeader>

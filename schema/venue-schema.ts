@@ -33,7 +33,7 @@ export const venueTableNameSchema = z.object({
     created_at: z.string(),
     updated_at: z.string(),
     venue_tables: z.array(venueTableSchema),
-    venue_table_requirements: z.array(venueTableRequirementSchema),
+    venue_table_requirements: venueTableRequirementSchema
 });
 
 const venueStatusSchema = z.object({
