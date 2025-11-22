@@ -15,7 +15,7 @@ type TableCardProps = {
 
 export default function TableCard({ event, venueTableName, showDetails }: TableCardProps) {
 
-    const tableRequirements = venueTableName.venue_table_requirements[0]
+    const tableRequirements = venueTableName.venue_table_requirements
     
     const { cart } = useCart()
 

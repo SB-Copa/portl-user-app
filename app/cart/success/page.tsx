@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { asyncFetch } from '@/lib/asyncFetch'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { clearCartSessionStorage } from '@/lib/success-cleanup'
@@ -68,6 +68,18 @@ interface TransactionResponse {
 }
 
 export default function SuccessCheckout() {
+    return (
+        <Suspense fallback={
+            <div className="flex flex-col items-center justify-center gap-4 py-8 min-h-[calc(100lvh-20rem)]">
+                <p className="text-sm text-muted-foreground">Loading your tickets...</p>
+            </div>
+        }>
+            <SuccessCheckoutContent />
+        </Suspense>
+    )
+}
+
+function SuccessCheckoutContent() {
     const [transaction, setTransaction] = useState<TransactionResponse | null>(null)
     const [eventDetails, setEventDetails] = useState<Record<number, EventDetails>>({})
     const [loading, setLoading] = useState(true)
